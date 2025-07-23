@@ -1,0 +1,15 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente
+.env
+.env.local
+
+# Logs e arquivos temporários
+*.log
+.DS_Store (se estiver no macOS)
+.idea/ (se usar JetBrains IDE)
+
+# Build/compilação
+dist/
+build/

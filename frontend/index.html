@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Arte Digital</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Variáveis CSS para Cores e Fontes */
+        :root {
+            --color-primary: #6c5ce7;
+            /* Um roxo vibrante */
+            --color-secondary: #00cec9;
+            /* Um turquesa suave */
+            --color-accent: #ffeaa7;
+            /* Um amarelo pastel */
+            --color-background-light: #f8f9fa;
+            /* Fundo muito claro */
+            --color-background-dark: #2d3436;
+            /* Fundo escuro para contraste */
+            --color-text-dark: #34495e;
+            /* Texto escuro padrão */
+            --color-text-light: #ecf0f1;
+            /* Texto claro */
+            --color-border: #dfe6e9;
+            /* Cor de borda suave */
+            --color-error: #ee5253;
+            /* Vermelho para erros */
+            --color-success: #2ecc71;
+            /* Verde para sucesso */
+
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.12);
+            --border-radius-card: 12px;
+            --border-radius-button: 8px;
+        }
+
+        /* Reset Básico e Box Sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilos Globais do Corpo */
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text-dark);
+            background: linear-gradient(135deg, var(--color-background-light) 0%, #eef1f5 100%);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Contêiner Principal */
+        .container {
+            width: 90%;
+            /* NOVO: Ocupa 80% da largura */
+            max-width: 1400px;
+            /* Mantém um limite superior para telas gigantes */
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            flex-grow: 1;
+        }
+
+        /* Cabeçalho */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            border-radius: 3px;
+        }
+
+        .header__title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.05em;
+        }
+
+        .header__subtitle {
+            font-size: 1.3rem;
+            color: var(--color-text-dark);
+            font-weight: 400;
+        }
+
+        /* Seção de Upload */
+        .upload-section {
+            background: #ffffff;
+            border-radius: var(--border-radius-card);
+            padding: 3rem;
+            box-shadow: var(--shadow-medium);
+            margin-bottom: 4rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .upload-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .upload-area {
+            border: 3px dashed var(--color-border);
+            border-radius: var(--border-radius-card);
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--color-primary);
+            background-color: rgba(var(--color-primary), 0.05);
+        }
+
+        .upload-area__icon {
+            font-size: 4rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .upload-area__title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-area__text {
+            font-size: 1.1rem;
+            color: var(--color-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-area__input {
+            display: none;
+            /* Esconde o input de arquivo padrão */
+        }
+
+        .file-list-preview {
+            margin-top: 1.5rem;
+            text-align: left;
+            padding: 0 1rem;
+            color: var(--color-text-dark);
+            font-size: 0.95rem;
+            list-style: inside;
+            /* Mover bullet points para dentro */
+            max-height: 150px;
+            overflow-y: auto;
+            border-top: 1px solid var(--color-border);
+            padding-top: 1rem;
+        }
+
+        /* Descrição do Lote no Upload */
+        .batch-upload-description {
+            margin-top: 2rem;
+            text-align: left;
+            padding: 0 1rem;
+        }
+
+        .batch-upload-description__label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--color-text-dark);
+            font-size: 1.15rem;
+            font-family: var(--font-heading);
+        }
+
+        .batch-upload-description__textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-button);
+            resize: vertical;
+            min-height: 100px;
+            max-height: 250px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .batch-upload-description__textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(var(--color-primary), 0.2);
+        }
+
+        .description-counter {
+            font-size: 0.85rem;
+            color: var(--color-gray);
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        /* Barra de Progresso e Status */
+        .progress-container {
+            width: 100%;
+            background-color: var(--color-border);
+            border-radius: var(--border-radius-button);
+            margin-top: 2rem;
+            height: 12px;
+            overflow: hidden;
+            display: none;
+            /* Escondido por padrão */
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+            border-radius: var(--border-radius-button);
+            transition: width 0.5s ease-in-out;
+        }
+
+        .status-message {
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-button);
+            display: inline-block;
+        }
+
+        .status-message.success {
+            background-color: rgba(var(--color-success), 0.15);
+            color: var(--color-success);
+        }
+
+        .status-message.error {
+            background-color: rgba(var(--color-error), 0.15);
+            color: var(--color-error);
+        }
+
+        .status-message.warning {
+            background-color: rgba(255, 165, 0, 0.15);
+            /* Laranja suave */
+            color: orange;
+        }
+
+        /* Botões */
+        .btn {
+            padding: 0.9rem 2.2rem;
+            border-radius: var(--border-radius-button);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1.05rem;
+            margin-top: 2.5rem;
+            background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(var(--color-primary), 0.3);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(var(--color-primary), 0.4);
+        }
+
+        .btn:disabled {
+            background: var(--color-gray);
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn--secondary {
+            background: var(--color-background-dark);
+            color: var(--color-text-light);
+            box-shadow: 0 5px 15px rgba(45, 52, 54, 0.3);
+        }
+
+        .btn--secondary:hover {
+            background: #4a5457;
+            box-shadow: 0 8px 20px rgba(45, 52, 54, 0.4);
+        }
+
+        .btn--danger {
+            background: var(--color-error);
+            box-shadow: 0 5px 15px rgba(var(--color-error), 0.3);
+        }
+
+        .btn--danger:hover {
+            background: #d63031;
+            box-shadow: 0 8px 20px rgba(var(--color-error), 0.4);
+        }
+
+        .btn--success {
+            background: var(--color-success);
+            box-shadow: 0 5px 15px rgba(var(--color-success), 0.3);
+        }
+
+        .btn--success:hover {
+            background: #27ae60;
+            box-shadow: 0 8px 20px rgba(var(--color-success), 0.4);
+        }
+
+        /* Galeria de Lotes */
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 5rem;
+            /* Mais espaço entre os lotes */
+            margin-top: 4rem;
+        }
+
+        .batch-card {
+            background: #ffffff;
+            border-radius: var(--border-radius-card);
+            box-shadow: var(--shadow-medium);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .batch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .batch-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .batch-card__title {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--color-primary);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .batch-card__date {
+            font-size: 1rem;
+            color: var(--color-gray);
+            font-weight: 500;
+        }
+
+        /* Seção de Descrição e Comentários do Lote */
+        .batch-info-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px dashed var(--color-border);
+        }
+
+        .batch-info-section__title {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            color: var(--color-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .batch-info-section__textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-button);
+            resize: vertical;
+            min-height: 120px;
+            max-height: 300px;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .batch-info-section__textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(var(--color-primary), 0.2);
+        }
+
+        .batch-info-section .description-counter {
+            /* Reutiliza o estilo do contador */
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .batch-chat-box {
+            margin-top: 2rem;
+            border-top: 1px dashed var(--color-border);
+            padding-top: 2rem;
+        }
+
+        .batch-chat-box__title {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--color-text-dark);
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+
+        .batch-chat-messages {
+            max-height: 180px;
+            /* Mais altura para comentários do lote */
+            overflow-y: auto;
+            margin-bottom: 1.2rem;
+            padding-right: 10px;
+            /* Espaço para scrollbar */
+            background-color: var(--color-background-light);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid var(--color-border);
+        }
+
+        /* Grid de Fotos Dentro do Lote */
+        .batch-photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            /* Tamanho ligeiramente maior */
+            gap: 2.5rem;
+            margin-top: 3rem;
+            /* Espaço após info do lote */
+        }
+
+        /* Card de Foto Individual */
+        .photo-card {
+            background: #ffffff;
+            border-radius: var(--border-radius-card);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-card__img {
+            width: 100%;
+            height: 220px;
+            /* Ajuste para melhor visualização */
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-card__details {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .photo-description-content {
+            flex-grow: 1;
+        }
+
+        .photo-description-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-button);
+            resize: vertical;
+            min-height: 90px;
+            max-height: 180px;
+            font-size: 0.95rem;
+            margin-bottom: 0.6rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-description-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(var(--color-primary), 0.2);
+        }
+
+        .photo-card .description-counter {
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .chat-box {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed var(--color-border);
+        }
+
+        .chat-box__title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--color-text-dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            max-height: 120px;
+            /* Altura para comentários da foto */
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            padding-right: 5px;
+            background-color: var(--color-background-light);
+            border-radius: 6px;
+            padding: 0.8rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .message {
+            margin-bottom: 0.7rem;
+            padding: 0.7rem;
+            border-radius: 6px;
+            background: #f1f2f6;
+            /* Cor ligeiramente diferente para mensagens */
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message:last-child {
+            margin-bottom: 0;
+        }
+
+        .message__author {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-right: 0.6rem;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .chat-input__textarea {
+            flex-grow: 1;
+            padding: 0.8rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-button);
+            resize: none;
+            min-height: 50px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .chat-input__textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(var(--color-primary), 0.2);
+        }
+
+        .chat-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.8rem;
+            width: 100%;
+        }
+
+        .chat-controls__counter {
+            font-size: 0.8rem;
+            color: var(--color-gray);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            /* Centraliza botões */
+        }
+
+        /* Mensagem de Galeria Vazia */
+        .empty-gallery {
+            text-align: center;
+            padding: 4rem;
+            background: #ffffff;
+            border-radius: var(--border-radius-card);
+            box-shadow: var(--shadow-light);
+            margin-top: 4rem;
+        }
+
+        .empty-gallery__text {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--color-text-dark);
+            font-weight: 600;
+        }
+
+        .empty-gallery__subtext {
+            color: var(--color-gray);
+            font-size: 1.1rem;
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .header__title {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .batch-card {
+                padding: 2rem;
+            }
+
+            .batch-card__title {
+                font-size: 1.8rem;
+            }
+
+            .batch-photos-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 2rem;
+            }
+
+            .photo-card__img {
+                height: 180px;
+            }
+
+            .upload-section {
+                padding: 2rem;
+            }
+
+            .upload-area__title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .batch-card__header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+
+            .batch-card__title {
+                font-size: 1.6rem;
+            }
+
+            .batch-card__date {
+                font-size: 0.85rem;
+            }
+
+            .batch-photos-grid {
+                grid-template-columns: 1fr;
+                /* Uma coluna em telas menores */
+                gap: 1.5rem;
+            }
+
+            .photo-card__img {
+                height: 250px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-top: 1.5rem;
+                /* Ajuste a margem para botões em coluna */
+            }
+
+            .upload-section {
+                padding: 1.5rem;
+            }
+
+            .header__title {
+                font-size: 2.5rem;
+            }
+
+            .header__subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem 0.8rem;
+            }
+
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+
+            .upload-area__icon {
+                font-size: 3rem;
+            }
+
+            .upload-area__title {
+                font-size: 1.3rem;
+            }
+
+            .upload-area__text {
+                font-size: 0.95rem;
+            }
+
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.95rem;
+            }
+
+            .batch-card {
+                padding: 1.5rem;
+            }
+
+            .batch-card__title {
+                font-size: 1.4rem;
+            }
+
+            .batch-info-section__title,
+            .batch-chat-box__title,
+            .chat-box__title {
+                font-size: 1.2rem;
+            }
+
+            .photo-card__details,
+            .batch-info-section .description-counter {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="header__title">Galeria de Arte Digital</h1>
+            <p class="header__subtitle">Capture, Compartilhe e Contemple Suas Criações Visuais</p>
+        </header>
+
+        <section class="upload-section">
+            <div class="upload-area" id="drop-area">
+                <div class="upload-area__icon">🖼️</div>
+                <h2 class="upload-area__title">Arraste e Solte Suas Obras Aqui</h2>
+                <p class="upload-area__text">ou</p>
+                <input type="file" id="file-input" accept="image/*" multiple class="upload-area__input">
+                <button class="btn btn--secondary" id="select-btn">Selecionar Arquivos</button>
+                <ul id="file-list-preview" class="file-list-preview"></ul>
+            </div>
+
+            <div class="batch-upload-description">
+                <label for="batch-description-input" class="batch-upload-description__label">Contexto do Lote de Fotos
+                    (Opcional)</label>
+                <textarea id="batch-description-input"
+                    placeholder="Adicione uma descrição geral para este conjunto de fotos (máx. 1000 caracteres)"
+                    maxlength="1000" class="batch-upload-description__textarea"
+                    oninput="updateInitialBatchDescriptionCounter()"></textarea>
+                <div class="description-counter" id="initial-batch-description-counter">0/1000 caracteres</div>
+            </div>
+
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+
+            <div class="status-message" id="status"></div>
+
+            <button class="btn" id="upload-btn" disabled>Enviar Lote de Fotos</button>
+        </section>
+
+        <section class="gallery" id="gallery">
+        </section>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        const fileInput = document.getElementById('file-input');
+        const selectBtn = document.getElementById('select-btn');
+        const uploadBtn = document.getElementById('upload-btn');
+        const dropArea = document.getElementById('drop-area');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const statusEl = document.getElementById('status');
+        const galleryEl = document.getElementById('gallery');
+        const fileListPreview = document.getElementById('file-list-preview');
+        const batchDescriptionInput = document.getElementById('batch-description-input');
+
+        let filesToUpload = [];
+        let currentUser = 'Visitante'; // Pode ser dinâmico no futuro
+
+        // Event Listeners
+        selectBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+        uploadBtn.addEventListener('click', handleUpload);
+
+        // Drag and Drop Listeners
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            dropArea.classList.add('dragover');
+        }
+
+        function unhighlight() {
+            dropArea.classList.remove('dragover');
+        }
+
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        // Handle File Selection
+        function handleFileSelect(e) {
+            handleFiles(e.target.files);
+        }
+
+        function handleFiles(files) {
+            const imageFiles = Array.from(files).filter(file =>
+                file.type.match(/image\/(jpeg|png|jpg|webp)/)
+            );
+
+            if (imageFiles.length === 0) {
+                showStatus('Apenas imagens (JPEG, PNG, JPG, WEBP) são permitidas.', 'error');
+                return;
+            }
+
+            if (imageFiles.length + filesToUpload.length > 10) {
+                showStatus(`Você pode selecionar no máximo 10 arquivos. ${filesToUpload.length} já selecionados.`, 'error');
+                return;
+            }
+
+            filesToUpload = [...filesToUpload, ...imageFiles];
+            updateUI();
+        }
+
+        // Update UI based on selected files
+        function updateUI() {
+            if (filesToUpload.length > 0) {
+                uploadBtn.disabled = false;
+                showStatus(`${filesToUpload.length} arquivo(s) selecionado(s).`, '');
+
+                fileListPreview.innerHTML = filesToUpload.map(file => `<li>${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</li>`).join('');
+                fileListPreview.style.display = 'block';
+
+            } else {
+                uploadBtn.disabled = true;
+                showStatus('', ''); // Limpa a mensagem de status
+                fileListPreview.innerHTML = '';
+                fileListPreview.style.display = 'none';
+            }
+        }
+
+        // Upload handler
+        async function handleUpload() {
+            if (filesToUpload.length === 0) return;
+
+            try {
+                progressContainer.style.display = 'block';
+                showStatus('Enviando arquivos...', '');
+
+                const formData = new FormData();
+                filesToUpload.forEach(file => {
+                    formData.append('images', file);
+                });
+
+                const batchDescription = batchDescriptionInput.value.trim();
+                if (batchDescription) {
+                    formData.append('batchDescription', batchDescription.substring(0, 1000));
+                }
+
+                const response = await fetch(`${API_BASE_URL}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Erro no upload');
+                }
+
+                progressBar.style.width = '100%';
+                showStatus(data.message, 'success');
+
+                if (data.warnings) {
+                    showStatus(`${data.message} ${data.warnings}`, 'warning');
+                    console.warn('Arquivos com falha:', data.failed);
+                }
+
+                filesToUpload = [];
+                fileInput.value = '';
+                batchDescriptionInput.value = '';
+                updateInitialBatchDescriptionCounter();
+                updateUI();
+                fetchPhotos();
+
+            } catch (error) {
+                console.error('Erro no upload multi-arquivos:', error);
+                showStatus(error.message || 'Erro ao enviar arquivos. Tente novamente.', 'error');
+            } finally {
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    progressBar.style.width = '0%';
+                }, 2000);
+            }
+        }
+
+        // Fetch photos (batches) from API
+        async function fetchPhotos() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/photos`);
+                const data = await response.json();
+
+                if (data.success) {
+                    renderGallery(data.batches);
+                } else {
+                    throw new Error(data.error || 'Erro ao carregar lotes de fotos');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar lotes de fotos:', error);
+                renderGallery([], error.message);
+            }
+        }
+
+        // Render the gallery
+        function renderGallery(batches, errorMessage = null) {
+            galleryEl.innerHTML = '';
+
+            if (!Array.isArray(batches) || batches.length === 0) {
+                galleryEl.innerHTML = `
+                <div class="empty-gallery">
+                    <p class="empty-gallery__text">${errorMessage || 'Nenhuma obra de arte digital encontrada.'}</p>
+                    <small class="empty-gallery__subtext">${errorMessage ? '' : 'Envie suas criações para começar!'}</small>
+                </div>
+                `;
+                return;
+            }
+
+            batches.forEach(batch => {
+                const validPhotos = batch.photos.filter(photo => photo && photo.url);
+
+                if (validPhotos.length === 0) {
+                    return;
+                }
+
+                const batchDate = new Date(batch.createdAt).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const batchItem = document.createElement('div');
+                batchItem.className = 'batch-card'; // Changed class name
+
+                batchItem.innerHTML = `
+                    <div class="batch-card__header">
+                        <h2 class="batch-card__title">Coleção de Obras (${validPhotos.length} fotos)</h2>
+                        <span class="batch-card__date">Criado em: ${batchDate}</span>
+                    </div>
+
+                    <div class="batch-info-section">
+                        <h3 class="batch-info-section__title">Sobre Esta Coleção</h3>
+                        <textarea 
+                            class="batch-info-section__textarea" 
+                            id="batch-description-input-${batch._id}" 
+                            maxlength="1000"
+                            oninput="updateBatchDescriptionCounter('${batch._id}')"
+                        >${batch.description || ''}</textarea>
+                        <div class="description-counter" id="batch-description-counter-${batch._id}">
+                            ${batch.description ? batch.description.length : 0}/1000 caracteres
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn--secondary" onclick="saveBatchDescription('${batch._id}')">Salvar Descrição da Coleção</button>
+                        </div>
+                        
+                        <div class="batch-chat-box">
+                            <h3 class="batch-chat-box__title">Comentários da Coleção</h3>
+                            <div class="batch-chat-messages" id="batch-chat-${batch._id}">
+                                ${batch.comments?.length > 0 ?
+                        batch.comments.map(comment => `
+                                        <div class="message">
+                                            <span class="message__author">${comment.author}:</span> ${comment.text}
+                                        </div>
+                                    `).join('') :
+                        '<div class="message">Nenhum comentário ainda para esta coleção.</div>'}
+                            </div>
+                            <div class="chat-input">
+                                <textarea 
+                                    placeholder="Deixe seu comentário sobre a coleção..." 
+                                    maxlength="200" 
+                                    id="batch-comment-input-${batch._id}"
+                                    class="chat-input__textarea"
+                                    oninput="updateBatchCommentCounter('${batch._id}')"
+                                ></textarea>
+                            </div>
+                            <div class="chat-controls">
+                                <span class="chat-controls__counter" id="batch-char-counter-${batch._id}">0/200</span>
+                                <button class="btn btn--success" onclick="sendBatchComment('${batch._id}')">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="batch-photos-grid">
+                        ${validPhotos.map(photo => `
+                            <div class="photo-card">
+                                <img src="${photo.url}" alt="Obra ${photo._id}" class="photo-card__img">
+                                <div class="photo-card__details">
+                                    <div class="photo-description-content">
+                                        <textarea 
+                                            class="photo-description-textarea" 
+                                            id="description-input-${photo._id}" 
+                                            maxlength="500"
+                                            oninput="updateDescriptionCounter('${photo._id}')"
+                                        >${photo.description || ''}</textarea>
+                                        <div class="description-counter" id="description-counter-${photo._id}">
+                                            ${photo.description ? photo.description.length : 0}/500 caracteres
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="chat-box">
+                                        <h3 class="chat-box__title">Comentários da Obra</h3>
+                                        <div class="chat-messages" id="chat-${photo._id}">
+                                            ${photo.comments?.length > 0 ?
+                                photo.comments.map(comment => `
+                                                    <div class="message">
+                                                        <span class="message__author">${comment.author}:</span> ${comment.text}
+                                                    </div>
+                                                `).join('') :
+                                '<div class="message">Nenhum comentário ainda para esta obra.</div>'}
+                                        </div>
+                                        <div class="chat-input">
+                                            <textarea 
+                                                placeholder="Participe do bate-papo..." 
+                                                maxlength="200" 
+                                                id="comment-input-${photo._id}"
+                                                class="chat-input__textarea"
+                                                oninput="updateCommentCounter('${photo._id}')"
+                                            ></textarea>
+                                        </div>
+                                        <div class="chat-controls">
+                                            <span class="chat-controls__counter" id="char-counter-${photo._id}">0/200</span>
+                                            <button class="btn btn--success" onclick="sendComment('${photo._id}')">Enviar</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="action-buttons">
+                                        <button class="btn btn--secondary" onclick="saveDescription('${photo._id}')">Salvar Descrição</button>
+                                        <button class="btn btn--danger" onclick="deletePhoto('${photo._id}')">Excluir Obra</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                galleryEl.appendChild(batchItem);
+
+                const batchChatMessagesEl = batchItem.querySelector(`#batch-chat-${batch._id}`);
+                if (batchChatMessagesEl) {
+                    batchChatMessagesEl.scrollTop = batchChatMessagesEl.scrollHeight;
+                }
+                validPhotos.forEach(photo => {
+                    const chatMessagesEl = batchItem.querySelector(`#chat-${photo._id}`);
+                    if (chatMessagesEl) {
+                        chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+                    }
+                });
+            });
+        }
+
+        // Helper function for status messages
+        function showStatus(message, type) {
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type}`;
+            if (message === '') {
+                statusEl.style.display = 'none';
+            } else {
+                statusEl.style.display = 'inline-block';
+            }
+        }
+
+        // Counter functions (individual photo)
+        function updateCommentCounter(photoId) {
+            const textarea = document.getElementById(`comment-input-${photoId}`);
+            const counter = document.getElementById(`char-counter-${photoId}`);
+            if (textarea && counter) {
+                const currentLength = textarea.value.length;
+                counter.textContent = `${currentLength}/200`;
+            }
+        }
+
+        function updateDescriptionCounter(photoId) {
+            const textarea = document.getElementById(`description-input-${photoId}`);
+            const counter = document.getElementById(`description-counter-${photoId}`);
+            if (textarea && counter) {
+                const currentLength = textarea.value.length;
+                counter.textContent = `${currentLength}/500 caracteres`;
+            }
+        }
+
+        // Counter functions (Batch)
+        function updateInitialBatchDescriptionCounter() {
+            const textarea = document.getElementById('batch-description-input');
+            const counter = document.getElementById('initial-batch-description-counter');
+            if (textarea && counter) {
+                const currentLength = textarea.value.length;
+                counter.textContent = `${currentLength}/1000 caracteres`;
+            }
+        }
+
+        function updateBatchDescriptionCounter(batchId) {
+            const textarea = document.getElementById(`batch-description-input-${batchId}`);
+            const counter = document.getElementById(`batch-description-counter-${batchId}`);
+            if (textarea && counter) {
+                const currentLength = textarea.value.length;
+                counter.textContent = `${currentLength}/1000 caracteres`;
+            }
+        }
+
+        function updateBatchCommentCounter(batchId) {
+            const textarea = document.getElementById(`batch-comment-input-${batchId}`);
+            const counter = document.getElementById(`batch-char-counter-${batchId}`);
+            if (textarea && counter) {
+                const currentLength = textarea.value.length;
+                counter.textContent = `${currentLength}/200`;
+            }
+        }
+
+        // API functions (Individual Photo)
+        async function sendComment(photoId) {
+            const textarea = document.getElementById(`comment-input-${photoId}`);
+            const comment = textarea.value.trim();
+
+            if (!comment) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/photos/${photoId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: comment,
+                        author: currentUser
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    textarea.value = '';
+                    document.getElementById(`char-counter-${photoId}`).textContent = '0/200';
+                    fetchPhotos();
+                } else {
+                    console.error('Erro detalhado ao enviar comentário:', data.error);
+                    alert(data.error || 'Erro ao enviar comentário');
+                }
+            } catch (error) {
+                console.error('Erro ao enviar comentário:', error);
+                alert(error.message || 'Erro ao enviar comentário');
+            }
+        }
+
+        async function saveDescription(photoId) {
+            const textarea = document.getElementById(`description-input-${photoId}`);
+            const newDescription = textarea.value.trim();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/photos/${photoId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        description: newDescription.substring(0, 500)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showStatus('Descrição da obra salva com sucesso!', 'success');
+                    updateDescriptionCounter(photoId);
+                } else {
+                    console.error('Erro detalhado ao salvar descrição da foto:', data.error);
+                    alert(data.error || 'Erro ao salvar descrição da foto');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar descrição da foto:', error);
+                alert(error.message || 'Erro ao salvar descrição da foto');
+            }
+        }
+
+        async function deletePhoto(id) {
+            if (!confirm('Tem certeza que deseja excluir esta obra permanentemente? Ela será removida do lote.')) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/photos/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showStatus('Obra excluída com sucesso!', 'success');
+                    fetchPhotos();
+                } else {
+                    throw new Error(data.error || 'Erro ao excluir obra');
+                }
+            } catch (error) {
+                console.error('Erro ao excluir obra:', error);
+                alert(error.message || 'Erro ao excluir obra');
+            }
+        }
+
+        // API functions (Batch)
+        async function saveBatchDescription(batchId) {
+            const textarea = document.getElementById(`batch-description-input-${batchId}`);
+            const newDescription = textarea.value.trim();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/batches/${batchId}/description`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        description: newDescription.substring(0, 1000)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showStatus('Descrição da coleção salva com sucesso!', 'success');
+                    updateBatchDescriptionCounter(batchId);
+                } else {
+                    console.error('Erro detalhado ao salvar descrição do lote:', data.error);
+                    alert(data.error || 'Erro ao salvar descrição do lote');
+                }
+            } catch (error) {
+                console.error('Erro ao salvar descrição do lote:', error);
+                alert(error.message || 'Erro ao salvar descrição do lote');
+            }
+        }
+
+        async function sendBatchComment(batchId) {
+            const textarea = document.getElementById(`batch-comment-input-${batchId}`);
+            const comment = textarea.value.trim();
+
+            if (!comment) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/batches/${batchId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: comment,
+                        author: currentUser
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    textarea.value = '';
+                    document.getElementById(`batch-char-counter-${batchId}`).textContent = '0/200';
+                    fetchPhotos();
+                } else {
+                    console.error('Erro detalhado ao enviar comentário do lote:', data.error);
+                    alert(data.error || 'Erro ao enviar comentário do lote');
+                }
+            } catch (error) {
+                console.error('Erro ao enviar comentário do lote:', error);
+                alert(error.message || 'Erro ao enviar comentário do lote');
+            }
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchPhotos();
+            updateInitialBatchDescriptionCounter();
+            showStatus('', ''); // Esconde a mensagem de status inicial
+        });
+    </script>
+</body>
+
+</html>
