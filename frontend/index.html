@@ -4,788 +4,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeria de Arte Digital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>LUMIÈRE VISUALS | Fotografia & Cinematografia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Variáveis CSS para Cores e Fontes */
+        /* Variáveis CSS */
         :root {
-            --color-primary: #6c5ce7;
-            /* Um roxo vibrante */
-            --color-secondary: #00cec9;
-            /* Um turquesa suave */
-            --color-accent: #ffeaa7;
-            /* Um amarelo pastel */
-            --color-background-light: #f8f9fa;
-            /* Fundo muito claro */
-            --color-background-dark: #2d3436;
-            /* Fundo escuro para contraste */
-            --color-text-dark: #34495e;
-            /* Texto escuro padrão */
-            --color-text-light: #ecf0f1;
-            /* Texto claro */
-            --color-border: #dfe6e9;
-            /* Cor de borda suave */
-            --color-error: #ee5253;
-            /* Vermelho para erros */
-            --color-success: #2ecc71;
-            /* Verde para sucesso */
-            --color-gray: #7f8c8d;
-            /* Cinza para texto suave */
-
-            --font-heading: 'Montserrat', sans-serif;
-            --font-body: 'Poppins', sans-serif;
-
-            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
-            --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.12);
-            --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.2);
-            /* Novo: Sombra mais pronunciada */
-            --border-radius-card: 16px;
-            /* Aumentado ligeiramente para um toque mais suave */
-            --border-radius-button: 10px;
-            /* Aumentado ligeiramente */
+            --primary: #0a0a0a;
+            --secondary: #f0f0f0;
+            --accent: #c7a17a;
+            --dark-accent: #5d4a30;
+            --text: #333;
+            --light-text: #f8f8f8;
+            --transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+            --section-padding: 100px;
         }
 
-        /* Reset Básico e Box Sizing */
+        /* Reset e Estilos Base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Estilos Globais do Corpo */
-        body {
-            font-family: var(--font-body);
-            color: var(--color-text-dark);
-            background: linear-gradient(135deg, var(--color-background-light) 0%, #eef1f5 100%);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            /* Previne scroll horizontal indesejado */
+        html {
+            scroll-behavior: smooth;
         }
 
-        /* Contêiner Principal */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            background-color: var(--secondary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .container {
             width: 90%;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 3rem 1.5rem;
-            /* Um pouco mais de padding */
-            flex-grow: 1;
         }
 
-        /* Cabeçalho */
-        .header {
-            text-align: center;
-            margin-bottom: 5rem;
-            /* Mais espaço abaixo do cabeçalho */
-            position: relative;
-            padding-bottom: 1.5rem;
-            animation: fadeInDown 1s ease-out;
-            /* Animação de entrada */
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            /* Linha um pouco mais longa */
-            height: 6px;
-            /* Linha um pouco mais grossa */
-            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-            border-radius: 3px;
-        }
-
-        .header__title {
-            font-family: var(--font-heading);
-            font-size: 4.2rem;
-            /* Título maior */
-            font-weight: 800;
-            /* Mais bold */
-            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 1rem;
-            letter-spacing: -0.06em;
-            /* Mais apertado */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
-            /* Sombra suave no texto */
-        }
-
-        .header__subtitle {
-            font-size: 1.4rem;
-            /* Subtítulo maior */
-            color: var(--color-text-dark);
-            font-weight: 500;
-            /* Mais peso */
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Seção de Upload */
-        .upload-section {
-            background: #ffffff;
-            border-radius: var(--border-radius-card);
-            padding: 3.5rem;
-            /* Mais padding */
-            box-shadow: var(--shadow-medium);
-            margin-bottom: 5rem;
-            /* Mais espaço abaixo */
-            text-align: center;
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            /* Transição mais suave */
-            position: relative;
-            z-index: 1;
-            /* Garante que fique acima de outros elementos */
-        }
-
-        .upload-section:hover {
-            transform: translateY(-8px);
-            /* Mais destaque no hover */
-            box-shadow: var(--shadow-heavy);
-            /* Sombra mais pesada no hover */
-        }
-
-        .upload-area {
-            border: 3px dashed var(--color-border);
-            border-radius: var(--border-radius-card);
-            padding: 4rem 2rem;
-            /* Mais padding */
-            margin-bottom: 2.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: #fcfdff;
-            /* Fundo ligeiramente diferente para a área de drop */
-        }
-
-        .upload-area.dragover {
-            border-color: var(--color-primary);
-            background-color: rgba(var(--color-primary), 0.08);
-            /* Cor de fundo mais notável */
-            box-shadow: inset 0 0 15px rgba(var(--color-primary), 0.1);
-            /* Sombra interna */
-        }
-
-        .upload-area__icon {
-            font-size: 5rem;
-            /* Ícone maior */
-            color: var(--color-primary);
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .upload-area.dragover .upload-area__icon {
-            transform: scale(1.1);
-            /* Animação no ícone ao arrastar */
-        }
-
-        .upload-area__title {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            /* Título maior */
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 0.8rem;
-        }
-
-        .upload-area__text {
-            font-size: 1.2rem;
-            /* Texto maior */
-            color: var(--color-gray);
-            margin-bottom: 2rem;
-            /* Mais espaço */
-        }
-
-        .upload-area__input {
-            display: none;
-        }
-
-        .file-list-preview {
-            margin-top: 2rem;
-            /* Mais espaço */
-            text-align: left;
-            padding: 0 1.5rem;
-            color: var(--color-text-dark);
-            font-size: 0.95rem;
-            list-style: inside;
-            max-height: 180px;
-            /* Mais altura */
-            overflow-y: auto;
-            border-top: 1px solid var(--color-border);
-            padding-top: 1.5rem;
-            background-color: #fefefe;
-            /* Fundo para lista */
-            border-radius: var(--border-radius-button);
-        }
-
-        .file-list-preview li {
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed #eee;
-        }
-
-        .file-list-preview li:last-child {
-            border-bottom: none;
-        }
-
-        /* Descrição do Lote no Upload */
-        .batch-upload-description {
-            margin-top: 2.5rem;
-            /* Mais espaço */
-            text-align: left;
-            padding: 0 1rem;
-        }
-
-        .batch-upload-description__label {
-            display: block;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            /* Mais bold */
-            color: var(--color-text-dark);
-            font-size: 1.25rem;
-            /* Texto maior */
-            font-family: var(--font-heading);
-        }
-
-        .batch-upload-description__textarea {
-            width: 100%;
-            padding: 1.2rem;
-            /* Mais padding */
-            border: 1px solid var(--color-border);
-            border-radius: var(--border-radius-button);
-            resize: vertical;
-            min-height: 120px;
-            /* Altura mínima maior */
-            max-height: 280px;
-            font-size: 1.05rem;
-            /* Fonte ligeiramente maior */
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            line-height: 1.5;
-        }
-
-        .batch-upload-description__textarea:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 4px rgba(var(--color-primary), 0.25);
-            /* Sombra de foco mais intensa */
-        }
-
-        .description-counter {
-            font-size: 0.9rem;
-            color: var(--color-gray);
-            text-align: right;
-            margin-top: 0.6rem;
-        }
-
-        /* Barra de Progresso e Status */
-        .progress-container {
-            width: 100%;
-            background-color: var(--color-border);
-            border-radius: var(--border-radius-button);
-            margin-top: 2.5rem;
-            /* Mais espaço */
-            height: 15px;
-            /* Barra mais alta */
-            overflow: hidden;
-            display: none;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
-            border-radius: var(--border-radius-button);
-            transition: width 0.6s ease-in-out;
-            /* Transição mais suave */
-        }
-
-        .status-message {
-            margin-top: 2rem;
-            /* Mais espaço */
-            font-size: 1.05rem;
-            font-weight: 600;
-            padding: 1rem 2rem;
-            /* Mais padding */
-            border-radius: var(--border-radius-button);
-            display: inline-block;
-            animation: fadeIn 0.5s ease-out;
-            /* Animação de entrada para mensagens */
-        }
-
-        .status-message.success {
-            background-color: rgba(46, 204, 113, 0.15);
-            /* Usando RGBA diretamente */
-            color: var(--color-success);
-            border: 1px solid var(--color-success);
-        }
-
-        .status-message.error {
-            background-color: rgba(238, 82, 83, 0.15);
-            color: var(--color-error);
-            border: 1px solid var(--color-error);
-        }
-
-        .status-message.warning {
-            background-color: rgba(255, 165, 0, 0.15);
-            color: orange;
-            border: 1px solid orange;
-        }
-
-        /* Botões */
         .btn {
-            padding: 1.1rem 2.8rem;
-            /* Mais padding para botões maiores */
-            border-radius: var(--border-radius-button);
-            font-weight: 700;
-            /* Mais bold */
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            /* Transição mais suave */
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: var(--accent);
+            color: var(--light-text);
             border: none;
-            font-size: 1.15rem;
-            /* Fonte maior */
-            margin-top: 3rem;
-            /* Mais espaço */
-            background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
-            color: white;
-            box-shadow: 0 6px 20px rgba(var(--color-primary), 0.35);
-            /* Sombra mais pronunciada */
-            letter-spacing: 0.02em;
-            /* Um pouco de espaçamento entre letras */
+            border-radius: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
         .btn:hover {
-            opacity: 0.95;
-            transform: translateY(-5px);
-            /* Mais movimento */
-            box-shadow: 0 10px 25px rgba(var(--color-primary), 0.45);
-            /* Sombra no hover mais intensa */
+            background-color: var(--dark-accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .btn:disabled {
-            background: var(--color-border);
-            /* Cor de fundo mais clara para desabilitado */
-            color: var(--color-gray);
-            cursor: not-allowed;
-            opacity: 0.8;
-            box-shadow: none;
-            transform: none;
-        }
-
-        .btn--secondary {
-            background: var(--color-background-dark);
-            color: var(--color-text-light);
-            box-shadow: 0 6px 20px rgba(45, 52, 54, 0.35);
-        }
-
-        .btn--secondary:hover {
-            background: #4a5457;
-            box-shadow: 0 10px 25px rgba(45, 52, 54, 0.45);
-        }
-
-        .btn--danger {
-            background: var(--color-error);
-            box-shadow: 0 6px 20px rgba(238, 82, 83, 0.35);
-        }
-
-        .btn--danger:hover {
-            background: #d63031;
-            box-shadow: 0 10px 25px rgba(238, 82, 83, 0.45);
-        }
-
-        .btn--success {
-            background: var(--color-success);
-            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.35);
-        }
-
-        .btn--success:hover {
-            background: #27ae60;
-            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.45);
-        }
-
-        /* Galeria de Lotes */
-        .gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 6rem;
-            /* Mais espaço entre os lotes */
-            margin-top: 5rem;
-            /* Mais espaço acima */
-            padding-bottom: 4rem;
-            /* Padding no final da galeria */
-        }
-
-        .batch-card {
-            background: #ffffff;
-            border-radius: var(--border-radius-card);
-            box-shadow: var(--shadow-medium);
-            padding: 3.5rem;
-            /* Mais padding */
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-            /* Garante que as sombras não vazem */
-        }
-
-        .batch-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-heavy);
-        }
-
-        .batch-card__header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-            /* Mais espaço */
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--color-border);
-            position: relative;
-        }
-
-        .batch-card__header::after {
+        .btn::before {
             content: '';
             position: absolute;
-            bottom: -1px;
-            /* Alinha com a borda */
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-            transform: scaleX(0);
-            /* Esconde a linha inicialmente */
-            transform-origin: left;
-            transition: transform 0.4s ease-out;
-        }
-
-        .batch-card:hover .batch-card__header::after {
-            transform: scaleX(1);
-            /* Expande a linha no hover */
-        }
-
-        .batch-card__title {
-            font-family: var(--font-heading);
-            font-size: 2.5rem;
-            /* Título maior */
-            color: var(--color-primary);
-            font-weight: 800;
-            letter-spacing: -0.04em;
-        }
-
-        .batch-card__date {
-            font-size: 1.05rem;
-            color: var(--color-gray);
-            font-weight: 500;
-            white-space: nowrap;
-            /* Impede quebra de linha */
-        }
-
-        /* Seção de Descrição e Comentários do Lote */
-        .batch-info-section {
-            margin-bottom: 3rem;
-            /* Mais espaço */
-            padding-bottom: 2.5rem;
-            border-bottom: 1px dashed var(--color-border);
-        }
-
-        .batch-info-section__title {
-            font-family: var(--font-heading);
-            font-size: 1.8rem;
-            /* Título maior */
-            color: var(--color-secondary);
-            margin-bottom: 1.8rem;
-            font-weight: 700;
-        }
-
-        .batch-info-section__textarea {
-            width: 100%;
-            padding: 1.2rem;
-            border: 1px solid var(--color-border);
-            border-radius: var(--border-radius-button);
-            resize: vertical;
-            min-height: 140px;
-            /* Altura mínima maior */
-            max-height: 350px;
-            font-size: 1.05rem;
-            text-align: left;
-            line-height: 1.5;
-            margin-bottom: 0.8rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .batch-info-section__textarea:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 4px rgba(var(--color-primary), 0.25);
-        }
-
-        .batch-info-section .description-counter {
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .batch-chat-box {
-            margin-top: 2.5rem;
-            /* Mais espaço */
-            border-top: 1px dashed var(--color-border);
-            padding-top: 2.5rem;
-        }
-
-        .batch-chat-box__title {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            color: var(--color-text-dark);
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-
-        .batch-chat-messages {
-            max-height: 200px;
-            /* Mais altura para comentários do lote */
-            overflow-y: auto;
-            margin-bottom: 1.5rem;
-            padding-right: 12px;
-            /* Espaço para scrollbar */
-            background-color: #fcfdff;
-            border-radius: 10px;
-            /* Borda mais arredondada */
-            padding: 1.2rem;
-            border: 1px solid var(--color-border);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-            /* Sombra interna sutil */
-        }
-
-        /* Grid de Fotos Dentro do Lote */
-        .batch-photos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            /* Fotos ligeiramente maiores */
-            gap: 3rem;
-            /* Mais espaço entre as fotos */
-            margin-top: 3.5rem;
-        }
-
-        /* Card de Foto Individual */
-        .photo-card {
-            background: #ffffff;
-            border-radius: var(--border-radius-card);
-            overflow: hidden;
-            box-shadow: var(--shadow-light);
+            height: 100%;
+            background-color: var(--primary);
             display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            /* Borda muito sutil */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
         }
 
-        .photo-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-medium);
-            /* Sombra mais intensa no hover */
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
 
-        .photo-card__img {
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loader-text {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 250px;
-            /* Ajuste para melhor visualização */
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease-in-out;
+            padding: 20px 0;
+            z-index: 1000;
+            transition: var(--transition);
         }
 
-        .photo-card:hover .photo-card__img {
-            transform: scale(1.03);
-            /* Zoom sutil na imagem no hover */
+        header.scrolled {
+            background-color: rgba(10, 10, 10, 0.95);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .photo-card__details {
-            padding: 1.8rem;
-            /* Mais padding */
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .photo-description-content {
-            flex-grow: 1;
-        }
-
-        .photo-description-textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 1px solid var(--color-border);
-            border-radius: var(--border-radius-button);
-            resize: vertical;
-            min-height: 100px;
-            max-height: 200px;
-            font-size: 0.98rem;
-            /* Fonte ligeiramente maior */
-            margin-bottom: 0.8rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            line-height: 1.5;
-        }
-
-        .photo-description-textarea:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(var(--color-primary), 0.2);
-        }
-
-        .photo-card .description-counter {
-            font-size: 0.85rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .chat-box {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px dashed var(--color-border);
-        }
-
-        .chat-box__title {
-            font-family: var(--font-heading);
-            font-size: 1.3rem;
-            color: var(--color-text-dark);
-            margin-bottom: 1.2rem;
-            font-weight: 700;
-        }
-
-        .chat-messages {
-            max-height: 150px;
-            /* Altura para comentários da foto */
-            overflow-y: auto;
-            margin-bottom: 1.2rem;
-            padding-right: 8px;
-            background-color: #fcfdff;
-            border-radius: 8px;
-            padding: 1rem;
-            border: 1px solid var(--color-border);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
-        }
-
-        .message {
-            margin-bottom: 0.8rem;
-            padding: 0.8rem;
-            border-radius: 8px;
-            background: #f1f2f6;
-            font-size: 0.92rem;
-            animation: fadeIn 0.4s ease;
-            border-left: 4px solid var(--color-secondary);
-            /* Destaque na mensagem */
-        }
-
-        .message:last-child {
-            margin-bottom: 0;
-        }
-
-        .message__author {
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-right: 0.8rem;
-        }
-
-        .chat-input {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .chat-input__textarea {
-            flex-grow: 1;
-            padding: 1rem;
-            border: 1px solid var(--color-border);
-            border-radius: var(--border-radius-button);
-            resize: none;
-            min-height: 60px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .chat-input__textarea:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(var(--color-primary), 0.2);
-        }
-
-        .chat-controls {
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            color: var(--accent);
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .nav-link:hover::after {
             width: 100%;
         }
 
-        .chat-controls__counter {
-            font-size: 0.85rem;
-            color: var(--color-gray);
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
-        .action-buttons {
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1630&q=80') no-repeat center center/cover;
             display: flex;
-            gap: 1.5rem;
-            /* Mais espaço entre botões */
-            margin-top: 2.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        /* Mensagem de Galeria Vazia */
-        .empty-gallery {
+            align-items: center;
+            color: var(--secondary);
             text-align: center;
-            padding: 5rem;
-            /* Mais padding */
-            background: #ffffff;
-            border-radius: var(--border-radius-card);
-            box-shadow: var(--shadow-medium);
-            margin-top: 5rem;
-            animation: fadeInUp 0.8s ease-out;
-            /* Animação de entrada */
+            position: relative;
+            overflow: hidden;
         }
 
-        .empty-gallery__text {
-            font-family: var(--font-heading);
-            font-size: 2.2rem;
-            /* Texto maior */
-            margin-bottom: 1.2rem;
-            color: var(--color-text-dark);
-            font-weight: 700;
-            line-height: 1.3;
+        .hero-content {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
 
-        .empty-gallery__subtext {
-            color: var(--color-gray);
-            font-size: 1.2rem;
-            /* Texto maior */
+        .hero-title {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease-out;
         }
 
-        /* Animações */
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-btn {
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--secondary);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
             }
         }
 
         @keyframes fadeInDown {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-30px);
             }
 
             to {
@@ -797,7 +331,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
 
             to {
@@ -806,743 +340,1358 @@
             }
         }
 
-        /* Efeitos de Scrollbar (WebKit/Chrome/Safari) */
-        ::-webkit-scrollbar {
-            width: 8px;
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
+
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+
+        /* About Section */
+        .about {
+            padding: var(--section-padding) 0;
+            background-color: var(--secondary);
+        }
+
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-img {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            height: 500px;
+        }
+
+        .about-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .about-img:hover img {
+            transform: scale(1.03);
+        }
+
+        .about-content {
+            padding-left: 30px;
+        }
+
+        .about-text {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .skills {
+            margin-top: 30px;
+        }
+
+        .skill-item {
+            margin-bottom: 20px;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .skill-bar {
             height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .skill-progress {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 4px;
+            transition: width 1.5s ease-out;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: var(--section-padding) 0;
+            background-color: #f5f5f5;
+        }
+
+        .portfolio-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .portfolio-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .filter-btn {
+            background: none;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background-color: var(--accent);
+            color: var(--light-text);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .portfolio-item {
+            position: relative;
             border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 4/3;
+            transition: var(--transition);
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--color-primary);
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-title {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .portfolio-category {
+            color: var(--accent);
+            font-weight: 600;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .portfolio-item:hover .portfolio-title,
+        .portfolio-item:hover .portfolio-category {
+            transform: translateY(0);
+        }
+
+        .portfolio-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .portfolio-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 1200px;
+            background-color: var(--secondary);
             border-radius: 10px;
-            transition: background 0.3s ease;
+            overflow: hidden;
+            position: relative;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--color-secondary);
+        .modal-img {
+            width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
         }
 
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent);
+            color: var(--secondary);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background-color: var(--dark-accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-info {
+            padding: 20px;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-category {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Services Section */
+        .services {
+            padding: var(--section-padding) 0;
+            background-color: var(--primary);
+            color: var(--secondary);
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .service-card:hover {
+            background-color: rgba(199, 161, 122, 0.1);
+            transform: translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .service-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 20px 0;
+        }
+
+        .service-features {
+            margin-bottom: 25px;
+        }
+
+        .service-feature {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .service-feature::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: var(--section-padding) 0;
+            background-color: var(--secondary);
+        }
+
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            display: none;
+        }
+
+        .testimonial.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .client-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            border: 3px solid var(--accent);
+        }
+
+        .client-rating {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .client-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .client-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .client-role {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slider-dot.active {
+            background-color: var(--accent);
+            transform: scale(1.2);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: var(--section-padding) 0;
+            background: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: var(--secondary);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-top: 5px;
+        }
+
+        .contact-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-form {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: var(--secondary);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-btn {
+            width: 100%;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 50px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-text {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .footer-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-link {
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .footer-newsletter p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .newsletter-form {
+            display: flex;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px 0 0 30px;
+            color: var(--secondary);
+            font-family: inherit;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .newsletter-btn {
+            padding: 0 20px;
+            background-color: var(--accent);
+            color: var(--secondary);
+            border: none;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-btn:hover {
+            background-color: var(--dark-accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
 
         /* Responsividade */
-        @media (max-width: 1200px) {
-            .container {
-                padding: 2.5rem 1rem;
-            }
-
-            .header__title {
-                font-size: 3.8rem;
-            }
-        }
-
         @media (max-width: 992px) {
-            .batch-card {
-                padding: 2.5rem;
+            .section-title {
+                font-size: 2.5rem;
             }
 
-            .batch-card__title {
-                font-size: 2rem;
+            .hero-title {
+                font-size: 3.5rem;
             }
 
-            .batch-photos-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 2.5rem;
+            .about-container {
+                grid-template-columns: 1fr;
             }
 
-            .photo-card__img {
-                height: 200px;
+            .about-content {
+                padding-left: 0;
             }
 
-            .upload-section {
-                padding: 2.5rem;
-            }
-
-            .upload-area__title {
-                font-size: 1.7rem;
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
         }
 
         @media (max-width: 768px) {
-            .batch-card__header {
+            :root {
+                --section-padding: 70px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background-color: var(--primary);
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-                padding-bottom: 1rem;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                transition: var(--transition);
+                z-index: 1000;
             }
 
-            .batch-card__title {
-                font-size: 1.8rem;
+            .nav-links.active {
+                right: 0;
             }
 
-            .batch-card__date {
-                font-size: 0.95rem;
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
             }
 
-            .batch-photos-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+            .hero-title {
+                font-size: 2.8rem;
             }
 
-            .photo-card__img {
-                height: 280px;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                margin-top: 1.8rem;
-            }
-
-            .upload-section {
-                padding: 2rem;
-            }
-
-            .header__title {
-                font-size: 3rem;
-            }
-
-            .header__subtitle {
-                font-size: 1.15rem;
-            }
-
-            .empty-gallery {
-                padding: 3rem;
-            }
-
-            .empty-gallery__text {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 2rem 0.8rem;
-            }
-
-            .upload-area {
-                padding: 2.5rem 1rem;
-            }
-
-            .upload-area__icon {
-                font-size: 4rem;
-            }
-
-            .upload-area__title {
-                font-size: 1.5rem;
-            }
-
-            .upload-area__text {
-                font-size: 1rem;
-            }
-
-            .btn {
-                padding: 0.9rem 1.8rem;
-                font-size: 1rem;
-            }
-
-            .batch-card {
-                padding: 2rem;
-            }
-
-            .batch-card__title {
-                font-size: 1.4rem;
-            }
-
-            .batch-info-section__title,
-            .batch-chat-box__title,
-            .chat-box__title {
+            .hero-subtitle {
                 font-size: 1.2rem;
             }
 
-            .photo-card__details {
-                padding: 1.5rem;
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            :root {
+                --section-padding: 50px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .portfolio-filter {
+                flex-wrap: wrap;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                border-radius: 30px;
+                margin-bottom: 10px;
+            }
+
+            .newsletter-btn {
+                border-radius: 30px;
+                padding: 12px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="header__title">Galeria de Arte Digital</h1>
-            <p class="header__subtitle">Capture, Compartilhe e Contemple Suas Criações Visuais</p>
-        </header>
-
-        <section class="upload-section">
-            <div class="upload-area" id="drop-area">
-                <div class="upload-area__icon">🖼️</div>
-                <h2 class="upload-area__title">Arraste e Solte Suas Obras Aqui</h2>
-                <p class="upload-area__text">ou</p>
-                <input type="file" id="file-input" accept="image/*" multiple class="upload-area__input">
-                <button class="btn btn--secondary" id="select-btn">Selecionar Arquivos</button>
-                <ul id="file-list-preview" class="file-list-preview"></ul>
-            </div>
-
-            <div class="batch-upload-description">
-                <label for="batch-description-input" class="batch-upload-description__label">Contexto do Lote de Fotos
-                    (Opcional)</label>
-                <textarea id="batch-description-input"
-                    placeholder="Adicione uma descrição geral para este conjunto de fotos (máx. 1000 caracteres)"
-                    maxlength="1000" class="batch-upload-description__textarea"
-                    oninput="updateInitialBatchDescriptionCounter()"></textarea>
-                <div class="description-counter" id="initial-batch-description-counter">0/1000 caracteres</div>
-            </div>
-
-            <div class="progress-container" id="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
-            </div>
-
-            <div class="status-message" id="status"></div>
-
-            <button class="btn" id="upload-btn" disabled>Enviar Lote de Fotos</button>
-        </section>
-
-        <section class="gallery" id="gallery">
-        </section>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">LUMIÈRE VISUALS</div>
+        </div>
     </div>
 
-    <script>
-        const API_BASE_URL = 'http://localhost:3000/api';
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-camera-retro logo-icon"></i>
+                LUMIÈRE VISUALS
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#about" class="nav-link">Sobre</a></li>
+                    <li><a href="#portfolio" class="nav-link">Portfólio</a></li>
+                    <li><a href="#services" class="nav-link">Serviços</a></li>
+                    <li><a href="#contact" class="nav-link">Contato</a></li>
+                </ul>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
 
-        const fileInput = document.getElementById('file-input');
-        const selectBtn = document.getElementById('select-btn');
-        const uploadBtn = document.getElementById('upload-btn');
-        const dropArea = document.getElementById('drop-area');
-        const progressContainer = document.getElementById('progress-container');
-        const progressBar = document.getElementById('progress-bar');
-        const statusEl = document.getElementById('status');
-        const galleryEl = document.getElementById('gallery');
-        const fileListPreview = document.getElementById('file-list-preview');
-        const batchDescriptionInput = document.getElementById('batch-description-input');
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Capturando <span class="text-accent">momentos</span>, criando <span
+                    class="text-accent">histórias</span></h1>
+            <p class="hero-subtitle">Fotografia e cinematografia profissional para transformar seus momentos mais
+                especiais em memórias eternas.</p>
+            <a href="#contact" class="btn hero-btn">Agende sua sessão</a>
+        </div>
+        <a href="#about" class="hero-scroll">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
 
-        let filesToUpload = [];
-        let currentUser = 'Visitante'; // Pode ser dinâmico no futuro
-
-        // Event Listeners
-        selectBtn.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', handleFileSelect);
-        uploadBtn.addEventListener('click', handleUpload);
-
-        // Drag and Drop Listeners
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, highlight, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, unhighlight, false);
-        });
-
-        function highlight() {
-            dropArea.classList.add('dragover');
-        }
-
-        function unhighlight() {
-            dropArea.classList.remove('dragover');
-        }
-
-        dropArea.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        }
-
-        // Handle File Selection
-        function handleFileSelect(e) {
-            handleFiles(e.target.files);
-        }
-
-        function handleFiles(files) {
-            const imageFiles = Array.from(files).filter(file =>
-                file.type.match(/image\/(jpeg|png|jpg|webp)/)
-            );
-
-            if (imageFiles.length === 0) {
-                showStatus('Apenas imagens (JPEG, PNG, JPG, WEBP) são permitidas.', 'error');
-                return;
-            }
-
-            if (imageFiles.length + filesToUpload.length > 10) {
-                showStatus(`Você pode selecionar no máximo 10 arquivos. ${filesToUpload.length} já selecionados.`, 'error');
-                return;
-            }
-
-            filesToUpload = [...filesToUpload, ...imageFiles];
-            updateUI();
-        }
-
-        // Update UI based on selected files
-        function updateUI() {
-            if (filesToUpload.length > 0) {
-                uploadBtn.disabled = false;
-                showStatus(`${filesToUpload.length} arquivo(s) selecionado(s).`, '');
-
-                fileListPreview.innerHTML = filesToUpload.map(file => `<li>${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</li>`).join('');
-                fileListPreview.style.display = 'block';
-
-            } else {
-                uploadBtn.disabled = true;
-                showStatus('', ''); // Limpa a mensagem de status
-                fileListPreview.innerHTML = '';
-                fileListPreview.style.display = 'none';
-            }
-        }
-
-        // Upload handler
-        async function handleUpload() {
-            if (filesToUpload.length === 0) return;
-
-            try {
-                progressContainer.style.display = 'block';
-                showStatus('Enviando arquivos...', '');
-
-                const formData = new FormData();
-                filesToUpload.forEach(file => {
-                    formData.append('images', file);
-                });
-
-                const batchDescription = batchDescriptionInput.value.trim();
-                if (batchDescription) {
-                    formData.append('batchDescription', batchDescription.substring(0, 1000));
-                }
-
-                const response = await fetch(`${API_BASE_URL}/upload`, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (!response.ok || !data.success) {
-                    throw new Error(data.error || 'Erro no upload');
-                }
-
-                progressBar.style.width = '100%';
-                showStatus(data.message, 'success');
-
-                if (data.warnings) {
-                    showStatus(`${data.message} ${data.warnings}`, 'warning');
-                    console.warn('Arquivos com falha:', data.failed);
-                }
-
-                filesToUpload = [];
-                fileInput.value = '';
-                batchDescriptionInput.value = '';
-                updateInitialBatchDescriptionCounter();
-                updateUI();
-                fetchPhotos();
-
-            } catch (error) {
-                console.error('Erro no upload multi-arquivos:', error);
-                showStatus(error.message || 'Erro ao enviar arquivos. Tente novamente.', 'error');
-            } finally {
-                setTimeout(() => {
-                    progressContainer.style.display = 'none';
-                    progressBar.style.width = '0%';
-                }, 2000);
-            }
-        }
-
-        // Fetch photos (batches) from API
-        async function fetchPhotos() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/photos`);
-                const data = await response.json();
-
-                if (data.success) {
-                    renderGallery(data.batches);
-                } else {
-                    throw new Error(data.error || 'Erro ao carregar lotes de fotos');
-                }
-            } catch (error) {
-                console.error('Erro ao carregar lotes de fotos:', error);
-                renderGallery([], error.message);
-            }
-        }
-
-        // Render the gallery
-        function renderGallery(batches, errorMessage = null) {
-            galleryEl.innerHTML = '';
-
-            if (!Array.isArray(batches) || batches.length === 0) {
-                galleryEl.innerHTML = `
-                <div class="empty-gallery">
-                    <p class="empty-gallery__text">${errorMessage || 'Nenhuma obra de arte digital encontrada.'}</p>
-                    <small class="empty-gallery__subtext">${errorMessage ? '' : 'Envie suas criações para começar!'}</small>
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container about-container">
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1554080353-a576cf803bda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                    alt="Fotógrafo">
+            </div>
+            <div class="about-content">
+                <h2 class="section-title">Sobre <span class="text-accent">Mim</span></h2>
+                <p class="about-text">Olá, eu sou Rafael Lumiere, um fotógrafo e cineasta apaixonado por contar
+                    histórias através de imagens. Com mais de 10 anos de experiência, meu objetivo é capturar a essência
+                    de cada momento de forma autêntica e artística.</p>
+                <p class="about-text">Minha abordagem combina técnicas tradicionais com tecnologia de ponta para criar
+                    imagens que emocionam e inspiram. Acredito que cada cliente tem uma história única para contar, e é
+                    minha missão ajudar a trazê-la à vida.</p>
+                <div class="skills">
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Fotografia</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Edição de Vídeo</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Direção Criativa</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
                 </div>
-                `;
-                return;
-            }
+                <a href="#portfolio" class="btn">Ver Portfólio</a>
+            </div>
+        </div>
+    </section>
 
-            // Ordena os lotes do mais recente para o mais antigo
-            batches.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <div class="portfolio-header">
+                <h2 class="section-title">Meu <span class="text-accent">Portfólio</span></h2>
+                <p>Explore minha coleção de trabalhos criativos que capturam momentos especiais e contam histórias
+                    únicas.</p>
+                <div class="portfolio-filter">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="wedding">Casamentos</button>
+                    <button class="filter-btn" data-filter="portrait">Retratos</button>
+                    <button class="filter-btn" data-filter="commercial">Comercial</button>
+                    <button class="filter-btn" data-filter="events">Eventos</button>
+                </div>
+            </div>
+            <div class="portfolio-grid">
+                <!-- Item 1 -->
+                <div class="portfolio-item" data-category="wedding">
+                    <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                        alt="Casamento" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Amor Eterno</h3>
+                        <span class="portfolio-category">Casamento</span>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="portfolio-item" data-category="portrait">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1376&q=80"
+                        alt="Retrato" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Expressão Pura</h3>
+                        <span class="portfolio-category">Retrato</span>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="portfolio-item" data-category="commercial">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                        alt="Comercial" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Elegância Moderna</h3>
+                        <span class="portfolio-category">Comercial</span>
+                    </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="portfolio-item" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                        alt="Evento" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Noite de Gala</h3>
+                        <span class="portfolio-category">Evento</span>
+                    </div>
+                </div>
+                <!-- Item 5 -->
+                <div class="portfolio-item" data-category="wedding">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                        alt="Casamento" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Primeiro Beijo</h3>
+                        <span class="portfolio-category">Casamento</span>
+                    </div>
+                </div>
+                <!-- Item 6 -->
+                <div class="portfolio-item" data-category="portrait">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                        alt="Retrato" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Olhar Profundo</h3>
+                        <span class="portfolio-category">Retrato</span>
+                    </div>
+                </div>
+                <!-- Item 7 -->
+                <div class="portfolio-item" data-category="commercial">
+                    <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                        alt="Comercial" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Estilo Urbano</h3>
+                        <span class="portfolio-category">Comercial</span>
+                    </div>
+                </div>
+                <!-- Item 8 -->
+                <div class="portfolio-item" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                        alt="Evento" class="portfolio-img">
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Show ao Vivo</h3>
+                        <span class="portfolio-category">Evento</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Portfolio Modal -->
+    <div class="portfolio-modal">
+        <div class="modal-content">
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="" alt="" class="modal-img">
+            <div class="modal-info">
+                <h3 class="modal-title"></h3>
+                <span class="modal-category"></span>
+                <p class="modal-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco laboris.</p>
+            </div>
+        </div>
+    </div>
 
-            batches.forEach(batch => {
-                const validPhotos = batch.photos.filter(photo => photo && photo.url);
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="services-header">
+                <h2 class="section-title">Meus <span class="text-accent">Serviços</span></h2>
+                <p>Ofereço uma variedade de serviços profissionais para atender às suas necessidades criativas.</p>
+            </div>
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-ring"></i>
+                    </div>
+                    <h3 class="service-title">Fotografia de Casamento</h3>
+                    <p>Capturo cada momento especial do seu grande dia com sensibilidade e arte.</p>
+                    <div class="service-price">R$ 3.500</div>
+                    <ul class="service-features">
+                        <li class="service-feature">Cobertura completa (até 10h)</li>
+                        <li class="service-feature">Sessão pré-casamento</li>
+                        <li class="service-feature">Álbum premium</li>
+                        <li class="service-feature">Todas as fotos editadas</li>
+                        <li class="service-feature">Entrega em 4 semanas</li>
+                    </ul>
+                    <a href="#contact" class="btn">Reservar</a>
+                </div>
+                <!-- Service 2 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 class="service-title">Retratos Profissionais</h3>
+                    <p>Sessões criativas que revelam sua personalidade e essência.</p>
+                    <div class="service-price">R$ 800</div>
+                    <ul class="service-features">
+                        <li class="service-feature">Sessão de 2 horas</li>
+                        <li class="service-feature">3 looks diferentes</li>
+                        <li class="service-feature">Localização à sua escolha</li>
+                        <li class="service-feature">15 fotos editadas</li>
+                        <li class="service-feature">Entrega em 1 semana</li>
+                    </ul>
+                    <a href="#contact" class="btn">Reservar</a>
+                </div>
+                <!-- Service 3 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="service-title">Produção de Vídeo</h3>
+                    <p>Conto sua história através de imagens em movimento com alta qualidade cinematográfica.</p>
+                    <div class="service-price">R$ 5.000</div>
+                    <ul class="service-features">
+                        <li class="service-feature">Filmagem profissional</li>
+                        <li class="service-feature">Edição criativa</li>
+                        <li class="service-feature">Trilha sonora personalizada</li>
+                        <li class="service-feature">Vídeo final em 4K</li>
+                        <li class="service-feature">Entrega em 3 semanas</li>
+                    </ul>
+                    <a href="#contact" class="btn">Reservar</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                if (validPhotos.length === 0) {
-                    return;
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="testimonials-header">
+                <h2 class="section-title">Depoimentos de <span class="text-accent">Clientes</span></h2>
+                <p>Veja o que meus clientes têm a dizer sobre meu trabalho e experiência.</p>
+            </div>
+            <div class="testimonials-slider">
+                <!-- Testimonial 1 -->
+                <div class="testimonial active">
+                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Cliente" class="client-img">
+                    <div class="client-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="client-text">"Rafael capturou nosso casamento de forma tão mágica que toda vez que vemos
+                        as fotos, revivemos cada momento. Seu olhar artístico e atenção aos detalhes são incomparáveis!"
+                    </p>
+                    <h4 class="client-name">Ana Carolina</h4>
+                    <p class="client-role">Noiva</p>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="testimonial">
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Cliente" class="client-img">
+                    <div class="client-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="client-text">"O vídeo que Rafael produziu para nossa empresa superou todas as
+                        expectativas. Ele entendeu perfeitamente nossa visão e transformou em imagens que realmente
+                        falam com nosso público."</p>
+                    <h4 class="client-name">Marcos Vinícius</h4>
+                    <p class="client-role">CEO, Empresa X</p>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="testimonial">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Cliente" class="client-img">
+                    <div class="client-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="client-text">"As fotos do meu livro que Rafael fez são simplesmente incríveis. Ele tem um
+                        dom para capturar a essência das pessoas. Nunca me senti tão confiante e bonita em fotos!"</p>
+                    <h4 class="client-name">Isabela Fontes</h4>
+                    <p class="client-role">Autora</p>
+                </div>
+                <div class="slider-nav">
+                    <div class="slider-dot active" data-slide="0"></div>
+                    <div class="slider-dot" data-slide="1"></div>
+                    <div class="slider-dot" data-slide="2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Entre em <span class="text-accent">Contato</span></h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <div>
+                            <h3 class="contact-title">Localização</h3>
+                            <p>Av. Paulista, 1000 - São Paulo, SP</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <div>
+                            <h3 class="contact-title">Email</h3>
+                            <p>contato@lumierevisuals.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt contact-icon"></i>
+                        <div>
+                            <h3 class="contact-title">Telefone</h3>
+                            <p>(11) 99999-9999</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock contact-icon"></i>
+                        <div>
+                            <h3 class="contact-title">Horário</h3>
+                            <p>Seg-Sex: 9h - 18h</p>
+                            <p>Sábado: 10h - 14h</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Seu Nome" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Seu Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Assunto">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Sua Mensagem" required></textarea>
+                    </div>
+                    <button type="submit" class="btn form-btn">Enviar Mensagem</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">
+                        <i class="fas fa-camera-retro logo-icon"></i>
+                        LUMIÈRE VISUALS
+                    </a>
+                    <p class="footer-text">Capturando momentos, criando histórias. Fotografia e cinematografia
+                        profissional para eternizar suas memórias mais especiais.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Links Rápidos</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#about" class="footer-link">Sobre</a></li>
+                        <li><a href="#portfolio" class="footer-link">Portfólio</a></li>
+                        <li><a href="#services" class="footer-link">Serviços</a></li>
+                        <li><a href="#contact" class="footer-link">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-services">
+                    <h3 class="footer-title">Serviços</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="#" class="footer-link">Fotografia de Casamento</a></li>
+                        <li><a href="#" class="footer-link">Retratos Profissionais</a></li>
+                        <li><a href="#" class="footer-link">Produção de Vídeo</a></li>
+                        <li><a href="#" class="footer-link">Eventos Corporativos</a></li>
+                        <li><a href="#" class="footer-link">Edição de Imagens</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3 class="footer-title">Newsletter</h3>
+                    <p>Assine nossa newsletter para receber novidades e promoções especiais.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Seu Email" required>
+                        <button type="submit" class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 LUMIÈRE VISUALS. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loader
+        window.addEventListener('load', function () {
+            const loader = document.querySelector('.loader');
+            setTimeout(function () {
+                loader.classList.add('hidden');
+            }, 1500);
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', function () {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ?
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function () {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
                 }
-
-                const batchDate = new Date(batch.createdAt).toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-
-                const batchItem = document.createElement('div');
-                batchItem.className = 'batch-card';
-
-                batchItem.innerHTML = `
-                    <div class="batch-card__header">
-                        <h2 class="batch-card__title">Coleção de Obras (${validPhotos.length} fotos)</h2>
-                        <span class="batch-card__date">Criado em: ${batchDate}</span>
-                    </div>
-
-                    <div class="batch-info-section">
-                        <h3 class="batch-info-section__title">Sobre Esta Coleção</h3>
-                        <textarea
-                            class="batch-info-section__textarea"
-                            id="batch-description-input-${batch._id}"
-                            maxlength="1000"
-                            oninput="updateBatchDescriptionCounter('${batch._id}')"
-                        >${batch.description || ''}</textarea>
-                        <div class="description-counter" id="batch-description-counter-${batch._id}">${(batch.description || '').length}/1000 caracteres</div>
-                        <button class="btn btn--secondary" onclick="saveBatchDescription('${batch._id}')">Salvar Descrição</button>
-                    </div>
-
-                    <div class="batch-chat-box">
-                        <h3 class="batch-chat-box__title">Comentários da Coleção</h3>
-                        <div class="batch-chat-messages" id="batch-chat-messages-${batch._id}">
-                            ${(batch.comments || []).map(comment => `
-                                <div class="message">
-                                    <span class="message__author">${comment.author}:</span>
-                                    ${comment.text}
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div class="chat-input">
-                            <textarea
-                                class="chat-input__textarea"
-                                id="batch-comment-input-${batch._id}"
-                                placeholder="Adicione um comentário para a coleção (máx. 200 caracteres)"
-                                maxlength="200"
-                                oninput="updateBatchCommentCounter('${batch._id}')"
-                            ></textarea>
-                        </div>
-                        <div class="chat-controls">
-                            <span class="chat-controls__counter" id="batch-comment-counter-${batch._id}">0/200 caracteres</span>
-                            <button class="btn btn--primary" onclick="addBatchComment('${batch._id}')">Comentar</button>
-                        </div>
-                    </div>
-
-                    <div class="batch-photos-grid">
-                        ${validPhotos.map(photo => `
-                            <div class="photo-card" id="photo-card-${photo._id}">
-                                <img src="${photo.url}" alt="Obra de Arte Digital" class="photo-card__img">
-                                <div class="photo-card__details">
-                                    <div class="photo-description-content">
-                                        <textarea
-                                            class="photo-description-textarea"
-                                            id="photo-description-input-${photo._id}"
-                                            placeholder="Descrição da imagem (máx. 500 caracteres)"
-                                            maxlength="500"
-                                            oninput="updatePhotoDescriptionCounter('${photo._id}')"
-                                        >${photo.description || ''}</textarea>
-                                        <div class="description-counter" id="photo-description-counter-${photo._id}">${(photo.description || '').length}/500 caracteres</div>
-                                        <button class="btn btn--success" onclick="savePhotoDescription('${photo._id}')">Salvar Descrição da Imagem</button>
-                                    </div>
-                                    <div class="chat-box">
-                                        <h4 class="chat-box__title">Comentários da Imagem</h4>
-                                        <div class="chat-messages" id="chat-messages-${photo._id}">
-                                            ${(photo.comments || []).map(comment => `
-                                                <div class="message">
-                                                    <span class="message__author">${comment.author}:</span>
-                                                    ${comment.text}
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                        <div class="chat-input">
-                                            <textarea
-                                                class="chat-input__textarea"
-                                                id="comment-input-${photo._id}"
-                                                placeholder="Adicione um comentário (máx. 150 caracteres)"
-                                                maxlength="150"
-                                                oninput="updateCommentCounter('${photo._id}')"
-                                            ></textarea>
-                                        </div>
-                                        <div class="chat-controls">
-                                            <span class="chat-controls__counter" id="comment-counter-${photo._id}">0/150 caracteres</span>
-                                            <button class="btn btn--primary" onclick="addComment('${photo._id}')">Comentar</button>
-                                        </div>
-                                    </div>
-                                    <div class="action-buttons">
-                                        <button class="btn btn--danger" onclick="deletePhoto('${photo._id}')">Deletar Imagem</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn--danger" onclick="deleteBatch('${batch._id}')">Deletar Coleção Completa</button>
-                    </div>
-                `;
-                galleryEl.appendChild(batchItem);
-
-                // Inicializa os contadores de caracteres para os campos de texto existentes
-                updateBatchDescriptionCounter(batch._id);
-                batch.photos.forEach(photo => {
-                    updatePhotoDescriptionCounter(photo._id);
-                });
-
             });
-        }
+        });
 
-
-        // Status Message Helper
-        function showStatus(message, type) {
-            statusEl.textContent = message;
-            statusEl.className = 'status-message'; // Reset classes
-            if (type) {
-                statusEl.classList.add(type);
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
-        }
+        });
 
-        // --- Descrição do Lote ---
-        function updateInitialBatchDescriptionCounter() {
-            const textarea = document.getElementById('batch-description-input');
-            const counter = document.getElementById('initial-batch-description-counter');
-            if (textarea && counter) {
-                counter.textContent = `${textarea.value.length}/1000 caracteres`;
-            }
-        }
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
 
-        function updateBatchDescriptionCounter(batchId) {
-            const textarea = document.getElementById(`batch-description-input-${batchId}`);
-            const counter = document.getElementById(`batch-description-counter-${batchId}`);
-            if (textarea && counter) {
-                counter.textContent = `${textarea.value.length}/1000 caracteres`;
-            }
-        }
-
-        async function saveBatchDescription(batchId) {
-            const textarea = document.getElementById(`batch-description-input-${batchId}`);
-            const description = textarea.value;
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/batch/${batchId}/description`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ description })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    showStatus('Descrição do lote atualizada com sucesso!', 'success');
-                } else {
-                    throw new Error(data.error || 'Erro ao salvar descrição do lote.');
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
                 }
-            } catch (error) {
-                console.error('Erro ao salvar descrição do lote:', error);
-                showStatus(error.message, 'error');
-            }
-        }
+            });
+        });
 
-        // --- Comentários do Lote ---
-        function updateBatchCommentCounter(batchId) {
-            const textarea = document.getElementById(`batch-comment-input-${batchId}`);
-            const counter = document.getElementById(`batch-comment-counter-${batchId}`);
-            if (textarea && counter) {
-                counter.textContent = `${textarea.value.length}/200 caracteres`;
-            }
-        }
+        // Portfolio filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-        async function addBatchComment(batchId) {
-            const textarea = document.getElementById(`batch-comment-input-${batchId}`);
-            const text = textarea.value.trim();
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
 
-            if (!text) {
-                showStatus('O comentário da coleção não pode estar vazio.', 'error');
-                return;
-            }
+                const filterValue = this.getAttribute('data-filter');
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/batch/${batchId}/comments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ author: currentUser, text })
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
                 });
+            });
+        });
 
-                const data = await response.json();
-                if (data.success) {
-                    showStatus('Comentário da coleção adicionado!', 'success');
-                    textarea.value = '';
-                    updateBatchCommentCounter(batchId);
-                    fetchPhotos(); // Recarrega a galeria para mostrar o novo comentário
-                } else {
-                    throw new Error(data.error || 'Erro ao adicionar comentário da coleção.');
-                }
-            } catch (error) {
-                console.error('Erro ao adicionar comentário da coleção:', error);
-                showStatus(error.message, 'error');
+        // Portfolio modal
+        const portfolioModal = document.querySelector('.portfolio-modal');
+        const modalClose = document.querySelector('.modal-close');
+        const modalImg = document.querySelector('.modal-img');
+        const modalTitle = document.querySelector('.modal-title');
+        const modalCategory = document.querySelector('.modal-category');
+
+        document.querySelectorAll('.portfolio-item').forEach(item => {
+            item.addEventListener('click', function () {
+                const imgSrc = this.querySelector('img').getAttribute('src');
+                const title = this.querySelector('.portfolio-title').textContent;
+                const category = this.querySelector('.portfolio-category').textContent;
+
+                modalImg.setAttribute('src', imgSrc);
+                modalImg.setAttribute('alt', title);
+                modalTitle.textContent = title;
+                modalCategory.textContent = category;
+
+                portfolioModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        modalClose.addEventListener('click', function () {
+            portfolioModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        portfolioModal.addEventListener('click', function (e) {
+            if (e.target === portfolioModal) {
+                portfolioModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
             }
+        });
+
+        // Testimonials slider
+        const testimonials = document.querySelectorAll('.testimonial');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            testimonials.forEach(testimonial => testimonial.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            testimonials[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
         }
 
-        // --- Descrição da Foto Individual ---
-        function updatePhotoDescriptionCounter(photoId) {
-            const textarea = document.getElementById(`photo-description-input-${photoId}`);
-            const counter = document.getElementById(`photo-description-counter-${photoId}`);
-            if (textarea && counter) {
-                counter.textContent = `${textarea.value.length}/500 caracteres`;
-            }
-        }
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', function () {
+                showSlide(index);
+            });
+        });
 
-        async function savePhotoDescription(photoId) {
-            const textarea = document.getElementById(`photo-description-input-${photoId}`);
-            const description = textarea.value;
+        // Auto slide
+        setInterval(function () {
+            let nextSlide = (currentSlide + 1) % testimonials.length;
+            showSlide(nextSlide);
+        }, 5000);
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/photo/${photoId}/description`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ description })
+        // Animate skills on scroll
+        const skillBars = document.querySelectorAll('.skill-progress');
+        const skillsSection = document.querySelector('.skills');
+
+        function animateSkills() {
+            const sectionPosition = skillsSection.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+
+            if (sectionPosition < screenPosition) {
+                skillBars.forEach(bar => {
+                    const width = bar.parentElement.previousElementSibling.querySelector('span:last-child').textContent;
+                    bar.style.width = width;
                 });
-
-                const data = await response.json();
-                if (data.success) {
-                    showStatus('Descrição da imagem atualizada com sucesso!', 'success');
-                } else {
-                    throw new Error(data.error || 'Erro ao salvar descrição da imagem.');
-                }
-            } catch (error) {
-                console.error('Erro ao salvar descrição da imagem:', error);
-                showStatus(error.message, 'error');
+                // Remove event listener after animation
+                window.removeEventListener('scroll', animateSkills);
             }
         }
 
-        // --- Comentários da Foto Individual ---
-        function updateCommentCounter(photoId) {
-            const textarea = document.getElementById(`comment-input-${photoId}`);
-            const counter = document.getElementById(`comment-counter-${photoId}`);
-            if (textarea && counter) {
-                counter.textContent = `${textarea.value.length}/150 caracteres`;
-            }
-        }
+        window.addEventListener('scroll', animateSkills);
 
-        async function addComment(photoId) {
-            const textarea = document.getElementById(`comment-input-${photoId}`);
-            const text = textarea.value.trim();
+        // Form submission
+        const contactForm = document.querySelector('.contact-form');
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+            this.reset();
+        });
 
-            if (!text) {
-                showStatus('O comentário não pode estar vazio.', 'error');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/photo/${photoId}/comments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ author: currentUser, text })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    showStatus('Comentário adicionado!', 'success');
-                    textarea.value = '';
-                    updateCommentCounter(photoId);
-                    fetchPhotos(); // Recarrega a galeria para mostrar o novo comentário
-                } else {
-                    throw new Error(data.error || 'Erro ao adicionar comentário.');
-                }
-            } catch (error) {
-                console.error('Erro ao adicionar comentário:', error);
-                showStatus(error.message, 'error');
-            }
-        }
-
-        // --- Deletar Foto ---
-        async function deletePhoto(photoId) {
-            if (!confirm('Tem certeza que deseja deletar esta imagem?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/photo/${photoId}`, {
-                    method: 'DELETE'
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    showStatus('Imagem deletada com sucesso!', 'success');
-                    fetchPhotos(); // Recarrega a galeria
-                } else {
-                    throw new Error(data.error || 'Erro ao deletar imagem.');
-                }
-            } catch (error) {
-                console.error('Erro ao deletar imagem:', error);
-                showStatus(error.message, 'error');
-            }
-        }
-
-        // --- Deletar Lote ---
-        async function deleteBatch(batchId) {
-            if (!confirm('Tem certeza que deseja deletar esta coleção completa? Todas as imagens e comentários serão perdidos.')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/batch/${batchId}`, {
-                    method: 'DELETE'
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    showStatus('Coleção deletada com sucesso!', 'success');
-                    fetchPhotos(); // Recarrega a galeria
-                } else {
-                    throw new Error(data.error || 'Erro ao deletar coleção.');
-                }
-            } catch (error) {
-                console.error('Erro ao deletar coleção:', error);
-                showStatus(error.message, 'error');
-            }
-        }
-
-
-        // Initial load
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchPhotos();
-            updateInitialBatchDescriptionCounter();
+        // Newsletter form
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Obrigado por assinar nossa newsletter!');
+            this.reset();
         });
     </script>
+
+    <!-- Font Awesome (usando CDN no CSS) -->
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 </body>
 
 </html>

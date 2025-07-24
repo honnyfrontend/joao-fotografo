@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMIÈRE VISUALS | Galeria de Arte Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis CSS */
+        :root {
+            --primary: #0a0a0a;
+            --secondary: #f0f0f0;
+            --accent: #c7a17a;
+            --dark-accent: #5d4a30;
+            --text: #333;
+            --light-text: #f8f8f8;
+            --transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+            --section-padding: 100px;
+        }
+
+        /* Reset e Estilos Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            background-color: var(--secondary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: var(--accent);
+            color: var(--light-text);
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn:hover {
+            background-color: var(--dark-accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loader-text {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background-color: rgba(10, 10, 10, 0.95);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            color: var(--accent);
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1630&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            color: var(--secondary);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-btn {
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--secondary);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
+
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+
+        /* Upload Section */
+        .upload-section {
+            padding: var(--section-padding) 0;
+            background-color: var(--secondary);
+        }
+
+        .upload-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .upload-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .upload-area {
+            border: 3px dashed var(--accent);
+            border-radius: 10px;
+            padding: 60px 20px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(199, 161, 122, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--dark-accent);
+            background-color: rgba(199, 161, 122, 0.1);
+        }
+
+        .upload-area__icon {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .upload-area.dragover .upload-area__icon {
+            transform: scale(1.1);
+        }
+
+        .upload-area__title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .upload-area__text {
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 25px;
+            opacity: 0.8;
+        }
+
+        .upload-area__input {
+            display: none;
+        }
+
+        .file-list-preview {
+            margin-top: 30px;
+            text-align: left;
+            padding: 0 20px;
+            color: var(--text);
+            font-size: 0.95rem;
+            list-style: none;
+            max-height: 180px;
+            overflow-y: auto;
+            border-top: 1px solid rgba(199, 161, 122, 0.3);
+            padding-top: 20px;
+        }
+
+        .file-list-preview li {
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(199, 161, 122, 0.2);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .file-list-preview li:last-child {
+            border-bottom: none;
+        }
+
+        .file-size {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .batch-upload-description {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .batch-upload-description__label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        .batch-upload-description__textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(199, 161, 122, 0.3);
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 120px;
+            max-height: 280px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .batch-upload-description__textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(199, 161, 122, 0.2);
+        }
+
+        .description-counter {
+            font-size: 0.85rem;
+            color: var(--text);
+            opacity: 0.7;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: rgba(199, 161, 122, 0.2);
+            border-radius: 30px;
+            margin-top: 30px;
+            height: 10px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--dark-accent));
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+
+        .status-message {
+            margin-top: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 15px;
+            border-radius: 8px;
+            display: inline-block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .status-message.success {
+            background-color: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+
+        .status-message.error {
+            background-color: rgba(238, 82, 83, 0.15);
+            color: #ee5253;
+            border: 1px solid #ee5253;
+        }
+
+        .status-message.warning {
+            background-color: rgba(255, 165, 0, 0.15);
+            color: orange;
+            border: 1px solid orange;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: var(--section-padding) 0;
+            background-color: #f5f5f5;
+        }
+
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .batch-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: var(--transition);
+        }
+
+        .batch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .batch-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(199, 161, 122, 0.3);
+        }
+
+        .batch-card__title {
+            font-size: 2rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .batch-card__date {
+            font-size: 0.95rem;
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        .batch-info-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed rgba(199, 161, 122, 0.3);
+        }
+
+        .batch-info-section__title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .batch-info-section__textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(199, 161, 122, 0.3);
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 120px;
+            max-height: 280px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .batch-info-section__textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(199, 161, 122, 0.2);
+        }
+
+        .batch-chat-box {
+            margin-top: 30px;
+            border-top: 1px dashed rgba(199, 161, 122, 0.3);
+            padding-top: 30px;
+        }
+
+        .batch-chat-box__title {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .batch-chat-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: rgba(199, 161, 122, 0.05);
+            font-size: 0.95rem;
+            animation: fadeIn 0.4s ease;
+            border-left: 3px solid var(--accent);
+        }
+
+        .message__author {
+            font-weight: 700;
+            color: var(--accent);
+            margin-right: 10px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .chat-input__textarea {
+            flex-grow: 1;
+            padding: 15px;
+            border: 1px solid rgba(199, 161, 122, 0.3);
+            border-radius: 8px;
+            resize: none;
+            min-height: 80px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .chat-input__textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(199, 161, 122, 0.2);
+        }
+
+        .chat-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .chat-controls__counter {
+            font-size: 0.85rem;
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        .batch-photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .photo-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .photo-card__img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .photo-card:hover .photo-card__img {
+            transform: scale(1.03);
+        }
+
+        .photo-card__details {
+            padding: 25px;
+        }
+
+        .photo-description-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(199, 161, 122, 0.3);
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 100px;
+            max-height: 200px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .photo-description-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(199, 161, 122, 0.2);
+        }
+
+        .chat-box {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px dashed rgba(199, 161, 122, 0.3);
+        }
+
+        .chat-box__title {
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn--secondary {
+            background-color: var(--primary);
+        }
+
+        .btn--secondary:hover {
+            background-color: #333;
+        }
+
+        .btn--danger {
+            background-color: #ee5253;
+        }
+
+        .btn--danger:hover {
+            background-color: #d63031;
+        }
+
+        .btn--success {
+            background-color: #2ecc71;
+        }
+
+        .btn--success:hover {
+            background-color: #27ae60;
+        }
+
+        .empty-gallery {
+            text-align: center;
+            padding: 60px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-gallery__text {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .empty-gallery__subtext {
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 1.1rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-title {
+                font-size: 3.5rem;
+            }
+
+            .batch-card__header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .batch-card__title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --section-padding: 70px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background-color: var(--primary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                transition: var(--transition);
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+
+            .hero-title {
+                font-size: 2.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .upload-container {
+                padding: 30px 20px;
+            }
+
+            .upload-area {
+                padding: 40px 15px;
+            }
+
+            .upload-area__title {
+                font-size: 1.7rem;
+            }
+
+            .batch-photos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .empty-gallery {
+                padding: 40px 20px;
+            }
+
+            .empty-gallery__text {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            :root {
+                --section-padding: 50px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .upload-area__title {
+                font-size: 1.5rem;
+            }
+
+            .upload-area__text {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+
+            .batch-card {
+                padding: 30px 20px;
+            }
+
+            .batch-card__title {
+                font-size: 1.5rem;
+            }
+
+            .batch-info-section__title,
+            .batch-chat-box__title,
+            .chat-box__title {
+                font-size: 1.2rem;
+            }
+
+            .photo-card__details {
+                padding: 20px;
+            }
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: var(--section-padding) 0;
+            background: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: var(--secondary);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-top: 5px;
+        }
+
+        .contact-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-form {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: var(--secondary);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-btn {
+            width: 100%;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 50px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-text {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .footer-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-link {
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .footer-newsletter p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .newsletter-form {
+            display: flex;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px 0 0 30px;
+            color: var(--secondary);
+            font-family: inherit;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .newsletter-btn {
+            padding: 0 20px;
+            background-color: var(--accent);
+            color: var(--secondary);
+            border: none;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-btn:hover {
+            background-color: var(--dark-accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsividade Footer e Contato */
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form {
+                padding: 30px 20px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                border-radius: 30px;
+                margin-bottom: 10px;
+            }
+
+            .newsletter-btn {
+                border-radius: 30px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .contact-form {
+                padding: 25px 15px;
+            }
+
+            .footer-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">LUMIÈRE VISUALS</div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-camera-retro logo-icon"></i>
+                LUMIÈRE VISUALS
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#upload" class="nav-link">Upload</a></li>
+                    <li><a href="#gallery" class="nav-link">Galeria</a></li>
+                    <li><a href="#contact" class="nav-link">Contato</a></li>
+                </ul>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Galeria de Arte <span class="text-accent">Digital</span></h1>
+            <p class="hero-subtitle">Compartilhe e explore criações visuais com a qualidade LUMIÈRE</p>
+            <a href="#upload" class="btn hero-btn">Comece a Enviar</a>
+        </div>
+        <a href="#upload" class="hero-scroll">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section" id="upload">
+        <div class="container">
+            <h2 class="section-title">Envie Suas <span class="text-accent">Obras</span></h2>
+            <div class="upload-container">
+                <div class="upload-area" id="drop-area">
+                    <div class="upload-area__icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h2 class="upload-area__title">Arraste e Solte Suas Obras Aqui</h2>
+                    <p class="upload-area__text">ou</p>
+                    <input type="file" id="file-input" accept="image/*" multiple class="upload-area__input">
+                    <button class="btn" id="select-btn">Selecionar Arquivos</button>
+                    <ul id="file-list-preview" class="file-list-preview"></ul>
+                </div>
+
+                <div class="batch-upload-description">
+                    <label for="batch-description-input" class="batch-upload-description__label">Descrição do Lote
+                        (Opcional)</label>
+                    <textarea id="batch-description-input"
+                        placeholder="Adicione uma descrição geral para este conjunto de obras (máx. 1000 caracteres)"
+                        maxlength="1000" class="batch-upload-description__textarea"
+                        oninput="updateInitialBatchDescriptionCounter()"></textarea>
+                    <div class="description-counter" id="initial-batch-description-counter">0/1000 caracteres</div>
+                </div>
+
+                <div class="progress-container" id="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+
+                <div class="status-message" id="status"></div>
+
+                <button class="btn" id="upload-btn" disabled>Enviar Lote de Obras</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <h2 class="section-title">Nossa <span class="text-accent">Galeria</span></h2>
+            <div class="gallery-container" id="gallery-container">
+                <!-- Os lotes de fotos serão renderizados aqui pelo JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Entre em <span class="text-accent">Contato</span></h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <div>
+                            <h3 class="contact-title">Localização</h3>
+                            <p>Av. Paulista, 1000 - São Paulo, SP</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <div>
+                            <h3 class="contact-title">Email</h3>
+                            <p>contato@lumierevisuals.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt contact-icon"></i>
+                        <div>
+                            <h3 class="contact-title">Telefone</h3>
+                            <p>(11) 99999-9999</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock contact-icon"></i>
+                        <div>
+                            <h3 class="contact-title">Horário</h3>
+                            <p>Seg-Sex: 9h - 18h</p>
+                            <p>Sábado: 10h - 14h</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Seu Nome" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Seu Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Assunto">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Sua Mensagem" required></textarea>
+                    </div>
+                    <button type="submit" class="btn form-btn">Enviar Mensagem</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">
+                        <i class="fas fa-camera-retro logo-icon"></i>
+                        LUMIÈRE VISUALS
+                    </a>
+                    <p class="footer-text">Capturando momentos, criando histórias. Fotografia e cinematografia
+                        profissional para eternizar suas memórias mais especiais.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Links Rápidos</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#upload" class="footer-link">Upload</a></li>
+                        <li><a href="#gallery" class="footer-link">Galeria</a></li>
+                        <li><a href="#contact" class="footer-link">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-services">
+                    <h3 class="footer-title">Serviços</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="#" class="footer-link">Fotografia Profissional</a></li>
+                        <li><a href="#" class="footer-link">Edição de Imagens</a></li>
+                        <li><a href="#" class="footer-link">Produção de Vídeo</a></li>
+                        <li><a href="#" class="footer-link">Galeria Digital</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3 class="footer-title">Newsletter</h3>
+                    <p>Assine nossa newsletter para receber novidades e promoções especiais.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Seu Email" required>
+                        <button type="submit" class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 LUMIÈRE VISUALS. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loader
+        window.addEventListener('load', function () {
+            const loader = document.querySelector('.loader');
+            setTimeout(() => loader.classList.add('hidden'), 1500);
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active')
+                ? '<i class="fas fa-times"></i>'
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // API Configuration
+        // IMPORTANTE: Mude esta URL para a URL do seu backend na Render após o deploy!
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        // DOM Elements
+        const elements = {
+            fileInput: document.getElementById('file-input'),
+            selectBtn: document.getElementById('select-btn'),
+            uploadBtn: document.getElementById('upload-btn'),
+            dropArea: document.getElementById('drop-area'),
+            progressContainer: document.getElementById('progress-container'),
+            progressBar: document.getElementById('progress-bar'),
+            statusEl: document.getElementById('status'),
+            galleryContainer: document.getElementById('gallery-container'),
+            fileListPreview: document.getElementById('file-list-preview'),
+            batchDescriptionInput: document.getElementById('batch-description-input')
+        };
+
+        let filesToUpload = [];
+        const currentUser = 'Visitante';
+
+        // Event Listeners
+        elements.selectBtn.addEventListener('click', () => elements.fileInput.click());
+        elements.fileInput.addEventListener('change', handleFileSelect);
+        elements.uploadBtn.addEventListener('click', handleUpload);
+
+        // Drag and Drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            elements.dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            elements.dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            elements.dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        elements.dropArea.addEventListener('drop', handleDrop);
+
+        // Functions
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight() {
+            elements.dropArea.classList.add('dragover');
+        }
+
+        function unhighlight() {
+            elements.dropArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            handleFiles(e.target.files);
+        }
+
+        function handleFiles(files) {
+            const imageFiles = Array.from(files).filter(file =>
+                file.type.match(/image\/(jpeg|png|jpg|webp)/)
+            );
+
+            if (!imageFiles.length) {
+                showStatus('Apenas imagens (JPEG, PNG, JPG, WEBP) são permitidas.', 'error');
+                return;
+            }
+
+            if (imageFiles.length + filesToUpload.length > 10) {
+                showStatus(`Máximo de 10 arquivos. ${filesToUpload.length} já selecionados.`, 'error');
+                return;
+            }
+
+            filesToUpload = [...filesToUpload, ...imageFiles];
+            updateUI();
+        }
+
+        function updateUI() {
+            elements.uploadBtn.disabled = filesToUpload.length === 0;
+
+            if (filesToUpload.length) {
+                showStatus(`${filesToUpload.length} arquivo(s) selecionado(s).`, '');
+                elements.fileListPreview.innerHTML = filesToUpload.map(file =>
+                    `<li>${file.name} <span class="file-size">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span></li>`
+                ).join('');
+                elements.fileListPreview.style.display = 'block';
+            } else {
+                showStatus('', '');
+                elements.fileListPreview.innerHTML = '';
+                elements.fileListPreview.style.display = 'none';
+            }
+        }
+
+        async function handleUpload() {
+            if (!filesToUpload.length) return;
+
+            try {
+                showProgress('Enviando arquivos...');
+
+                const formData = new FormData();
+                filesToUpload.forEach(file => formData.append('images', file));
+
+                if (elements.batchDescriptionInput.value.trim()) {
+                    formData.append('batchDescription', elements.batchDescriptionInput.value.trim().substring(0, 1000));
+                }
+
+                const response = await fetch(`${API_BASE_URL}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Erro no upload');
+                }
+
+                const data = await response.json();
+                showStatus(data.message, 'success');
+
+                if (data.warnings) {
+                    console.warn('Arquivos com falha:', data.failed);
+                }
+
+                resetUploadForm();
+                await fetchPhotos();
+            } catch (error) {
+                console.error('Upload error:', error);
+                showStatus(error.message || 'Erro ao enviar arquivos. Tente novamente.', 'error');
+            } finally {
+                setTimeout(() => {
+                    elements.progressContainer.style.display = 'none';
+                    elements.progressBar.style.width = '0%';
+                }, 2000);
+            }
+        }
+
+        function showProgress(message) {
+            elements.progressContainer.style.display = 'block';
+            elements.progressBar.style.width = '0%';
+            setTimeout(() => elements.progressBar.style.width = '70%', 100);
+            showStatus(message, '');
+        }
+
+        function resetUploadForm() {
+            filesToUpload = [];
+            elements.fileInput.value = '';
+            elements.batchDescriptionInput.value = '';
+            updateInitialBatchDescriptionCounter();
+            updateUI();
+        }
+
+        async function fetchPhotos() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/photos`);
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Erro ao carregar lotes');
+                }
+
+                renderGallery(data.batches);
+            } catch (error) {
+                console.error('Fetch photos error:', error);
+                renderGallery([], error.message);
+            }
+        }
+
+        function renderGallery(batches, errorMessage = null) {
+            elements.galleryContainer.innerHTML = '';
+
+            if (!Array.isArray(batches) || !batches.length) {
+                elements.galleryContainer.innerHTML = `
+            <div class="empty-gallery">
+                <p class="empty-gallery__text">${errorMessage || 'Nenhuma obra encontrada.'}</p>
+                <small class="empty-gallery__subtext">${errorMessage ? '' : 'Envie suas criações!'}</small>
+            </div>
+        `;
+                return;
+            }
+
+            batches.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            batches.forEach(batch => {
+                const validPhotos = batch.photos?.filter(photo => photo?.url) || [];
+                if (!validPhotos.length) return;
+
+                const batchDate = new Date(batch.createdAt).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const batchItem = document.createElement('div');
+                batchItem.className = 'batch-card';
+                batchItem.innerHTML = createBatchHTML(batch, validPhotos, batchDate);
+                elements.galleryContainer.appendChild(batchItem);
+
+                initBatchCounters(batch);
+            });
+        }
+
+        function createBatchHTML(batch, photos, date) {
+            return `
+        <div class="batch-card__header">
+            <h2 class="batch-card__title">Coleção (${photos.length} fotos)</h2>
+            <span class="batch-card__date">Criado em: ${date}</span>
+        </div>
+
+        <div class="batch-info-section">
+            <h3 class="batch-info-section__title">Sobre Esta Coleção</h3>
+            <textarea class="batch-info-section__textarea" id="batch-description-input-${batch._id}" 
+                maxlength="1000" oninput="updateBatchDescriptionCounter('${batch._id}')"
+            >${batch.description || ''}</textarea>
+            <div class="description-counter" id="batch-description-counter-${batch._id}">
+                ${(batch.description || '').length}/1000
+            </div>
+            <button class="btn btn--secondary" onclick="saveBatchDescription('${batch._id}')">
+                Salvar Descrição da Coleção
+            </button>
+        </div>
+
+        <div class="batch-photos-grid">
+            ${photos.map(photo => createPhotoHTML(photo)).join('')}
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn--danger" onclick="deleteBatch('${batch._id}')">
+                Deletar Coleção
+            </button>
+        </div>
+    `;
+        }
+
+        function createPhotoHTML(photo) {
+            return `
+        <div class="photo-card" id="photo-card-${photo._id}">
+            <img src="${photo.url}" alt="Obra de Arte" class="photo-card__img">
+            <div class="photo-card__details">
+                <div class="photo-description-content">
+                    <textarea class="photo-description-textarea" id="photo-description-input-${photo._id}"
+                        placeholder="Descrição (máx. 500 caracteres)" maxlength="500"
+                        oninput="updatePhotoDescriptionCounter('${photo._id}')"
+                    >${photo.description || ''}</textarea>
+                    <div class="description-counter" id="photo-description-counter-${photo._id}">
+                        ${(photo.description || '').length}/500
+                    </div>
+                    <button class="btn btn--success" onclick="savePhotoDescription('${photo._id}')">
+                        Salvar Descrição da Imagem
+                    </button>
+                </div>
+                <div class="chat-box">
+                    <h4 class="chat-box__title">Comentários</h4>
+                    <div class="chat-messages" id="chat-messages-${photo._id}">
+                        ${(photo.comments || []).map(comment => `
+                            <div class="message">
+                                <span class="message__author">${comment.author}:</span>
+                                ${comment.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="chat-input">
+                        <textarea class="chat-input__textarea" id="comment-input-${photo._id}"
+                            placeholder="Comentário (máx. 150 caracteres)" maxlength="150"
+                            oninput="updateCommentCounter('${photo._id}')"></textarea>
+                    </div>
+                    <div class="chat-controls">
+                        <span class="chat-controls__counter" id="comment-counter-${photo._id}">0/150</span>
+                        <button class="btn" onclick="addComment('${photo._id}')">Comentar</button>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn--danger" onclick="deletePhoto('${photo._id}')">
+                        Deletar Imagem
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+        }
+
+        function initBatchCounters(batch) {
+            updateBatchDescriptionCounter(batch._id);
+            batch.photos?.forEach(photo => {
+                updatePhotoDescriptionCounter(photo._id);
+                updateCommentCounter(photo._id);
+            });
+        }
+
+        function showStatus(message, type) {
+            elements.statusEl.textContent = message;
+            elements.statusEl.className = `status-message ${type || ''}`.trim();
+        }
+
+        // Counter functions
+        function updateInitialBatchDescriptionCounter() {
+            updateCounter(
+                'batch-description-input',
+                'initial-batch-description-counter',
+                1000
+            );
+        }
+
+        function updateBatchDescriptionCounter(batchId) {
+            updateCounter(
+                `batch-description-input-${batchId}`,
+                `batch-description-counter-${batchId}`,
+                1000
+            );
+        }
+
+        function updatePhotoDescriptionCounter(photoId) {
+            updateCounter(
+                `photo-description-input-${photoId}`,
+                `photo-description-counter-${photoId}`,
+                500
+            );
+        }
+
+        function updateCommentCounter(photoId) {
+            updateCounter(
+                `comment-input-${photoId}`,
+                `comment-counter-${photoId}`,
+                150
+            );
+        }
+
+        function updateCounter(inputId, counterId, maxLength) {
+            const input = document.getElementById(inputId);
+            const counter = document.getElementById(counterId);
+            if (input && counter) {
+                counter.textContent = `${input.value.length}/${maxLength}`;
+            }
+        }
+
+        // API interaction functions
+        async function saveBatchDescription(batchId) {
+            await apiRequest(
+                `${API_BASE_URL}/batches/${batchId}/description`,
+                'PATCH',
+                { description: document.getElementById(`batch-description-input-${batchId}`).value },
+                'Descrição do lote atualizada com sucesso!',
+                'Erro ao salvar descrição do lote',
+                true
+            );
+        }
+
+        async function savePhotoDescription(photoId) {
+            await apiRequest(
+                `${API_BASE_URL}/photos/${photoId}`,
+                'PATCH',
+                { description: document.getElementById(`photo-description-input-${photoId}`).value },
+                'Descrição da imagem atualizada!',
+                'Erro ao salvar descrição',
+                true
+            );
+        }
+
+        async function addComment(photoId) {
+            const text = document.getElementById(`comment-input-${photoId}`).value.trim();
+            if (!text) {
+                showStatus('Comentário não pode estar vazio.', 'error');
+                return;
+            }
+
+            await apiRequest(
+                `${API_BASE_URL}/photos/${photoId}/comments`,
+                'POST',
+                { author: currentUser, text },
+                'Comentário adicionado!',
+                'Erro ao adicionar comentário'
+            );
+
+            document.getElementById(`comment-input-${photoId}`).value = '';
+            updateCommentCounter(photoId);
+            fetchPhotos();
+        }
+
+        async function deletePhoto(photoId) {
+            if (!confirm('Deletar esta imagem? Esta ação é irreversível.')) return;
+
+            await apiRequest(
+                `${API_BASE_URL}/photos/${photoId}`,
+                'DELETE',
+                null,
+                'Imagem deletada com sucesso!',
+                'Erro ao deletar imagem',
+                true
+            );
+        }
+
+        async function deleteBatch(batchId) {
+            if (!confirm('Deletar esta coleção completa e TODAS as suas fotos? Esta ação é irreversível.')) return;
+
+            await apiRequest(
+                `${API_BASE_URL}/batches/${batchId}`,
+                'DELETE',
+                null,
+                'Coleção e fotos deletadas com sucesso!',
+                'Erro ao deletar coleção',
+                true
+            );
+        }
+
+        async function apiRequest(url, method, body, successMsg, errorMsg, refreshOnSuccess = false) {
+            try {
+                const options = {
+                    method,
+                    headers: {}
+                };
+
+                if (body) {
+                    options.headers['Content-Type'] = 'application/json';
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(url, options);
+
+                if (!response.ok) {
+                    let errorData = {};
+                    try {
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            errorData = await response.json();
+                        } else {
+                            const errorText = await response.text();
+                            throw new Error(`Erro na requisição (Status: ${response.status}): ${response.statusText} - ${errorText}`);
+                        }
+                    } catch (e) {
+                        console.error('Erro ao parsear resposta de erro ou resposta não é JSON:', e);
+                        throw new Error(`Erro na requisição (Status: ${response.status}): ${response.statusText}`);
+                    }
+                    throw new Error(errorData.error || errorMsg || `Erro na requisição (Status: ${response.status})`);
+                }
+
+                showStatus(successMsg, 'success');
+                if (refreshOnSuccess) {
+                    setTimeout(fetchPhotos, 500);
+                }
+            } catch (error) {
+                console.error(`${errorMsg}:`, error);
+                showStatus(error.message, 'error');
+            }
+        }
+
+        // Form handlers
+        document.querySelector('.contact-form')?.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Mensagem enviada com sucesso!');
+            this.reset();
+        });
+
+        document.querySelector('.newsletter-form')?.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Obrigado por assinar nossa newsletter!');
+            this.reset();
+        });
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchPhotos();
+            updateInitialBatchDescriptionCounter();
+        });
+    </script>
+    <!-- Font Awesome (usando CDN no CSS) -->
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</body>
+
+</html>
