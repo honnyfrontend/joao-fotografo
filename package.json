@@ -1,15 +1,20 @@
 {
-  "name": "backend",
+  "name": "joao-fotografo-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "API para o projeto João Fotógrafo Profissional",
+  "main": "app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "photography",
+    "gallery",
+    "api"
+  ],
+  "author": "Seu Nome",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
@@ -22,5 +27,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
