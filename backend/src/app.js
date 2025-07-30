@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Lista de origens permitidas (ATUALIZE COM SUA URL REAL)
 const allowedOrigins = [
-    'https://joao-fotografo.onrender.com', // ← SUA URL NO RENDER
+    'https://joao-fotografo-profissional.onrender.com', // ← SUA URL NO RENDER
     'http://localhost:3000',
     'http://localhost:5173', // Vite/React
     'http://127.0.0.1:5500', // Live Server
