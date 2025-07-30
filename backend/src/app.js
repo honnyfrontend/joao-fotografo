@@ -1,78 +1,102 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config(); // Garante que as variáveis de ambiente sejam carregadas no início da aplicação
+const path = require('path');
 
 const app = express();
 
-// Conexão com MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('✅ Conectado ao MongoDB'))
-.catch(err => console.error('❌ Erro MongoDB:', err));
+// Conexão com MongoDB (versão atualizada)
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('✅ Conectado ao MongoDB'))
+  .catch(err => console.error('❌ Erro de conexão MongoDB:', err));
 
+// Configuração de CORS completa
 const allowedOrigins = [
-    'https://joao-fotografo.onrender.com', // ← URL DO SEU FRONTEND
-    'https://joao-fotografo-profissional.onrender.com', // URL do backend (opcional)
-    'http://localhost:3000',
-    'http://localhost:5173'
+  'https://joao-fotografo.onrender.com',
+  'https://joao-fotografo-profissional.onrender.com',
+  'http://localhost:3000',
+  'http://localhost:5173'
 ];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        // Esta é a parte importante. Se 'origin' for null, vamos permitir para o Live Server.
-        // No entanto, o ideal é que o Live Server envie uma origem http://
-        if (!origin) { 
-            console.log('CORS: Requisição com origem "null" detectada. Verificando allowedOrigins...');
-            // Se sua intenção é permitir 'null' (apenas para testar localmente), 
-            // você pode adicionar 'null' explicitamente ao array:
-            // if (allowedOrigins.includes('null')) { return callback(null, true); }
-            // Ou, se o seu Live Server realmente envia null (o que é incomum), você pode permitir aqui.
-            // Mas a melhor prática é que o Live Server envie um 'http://' válido.
-            // Por agora, vamos garantir que você não abra 'file:///'
-            // Se você AINDA está vendo null mesmo com Live Server, então seu Live Server está mal configurado ou você não o está usando corretamente.
-
-            // Vamos ser mais rigorosos aqui. Se você está vendo 'null', é porque não está no Live Server HTTP
-            // ou tem alguma configuração estranha.
-            // Por isso, a instrução principal é **NÃO** ter 'null' como origem.
-            const msg = `CORS Política: Origem 'null' não permitida. Por favor, use um servidor HTTP para o frontend (Ex: Live Server).`;
-            console.error(msg);
-            return callback(new Error(msg), false);
-        }
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = `A política CORS para este site não permite acesso do origin especificado: ${origin}`;
-            console.error(msg);
-            return callback(new Error(msg), false);
-        }
-        console.log(`CORS: Origem ${origin} permitida.`);
-        return callback(null, true);
-    },
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+  origin: function (origin, callback) {
+    if (!origin && process.env.NODE_ENV === 'development') {
+      return callback(null, true);
+    }
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Acesso bloqueado por política de CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
-app.use(express.json());
 
-// Rotas
-const uploadRoutes = require('./routes/uploadRoutes');
-app.use('/api', uploadRoutes);
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Rotas de API
+const router = express.Router();
+
+// Rota GET /photos (exemplo)
+router.get('/photos', async (req, res) => {
+  try {
+    // Substitua por sua lógica real de banco de dados
+    const photos = [
+      { id: 1, url: 'photo1.jpg', title: 'Foto 1' },
+      { id: 2, url: 'photo2.jpg', title: 'Foto 2' }
+    ];
+    res.json(photos);
+  } catch (error) {
+    console.error('Erro ao buscar fotos:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+// Rota POST /upload (exemplo)
+router.post('/upload', async (req, res) => {
+  try {
+    // Lógica de upload aqui
+    console.log('Dados recebidos:', req.body);
+    res.json({ 
+      success: true, 
+      message: 'Upload recebido com sucesso',
+      data: req.body 
+    });
+  } catch (error) {
+    console.error('Erro no upload:', error);
+    res.status(500).json({ error: 'Falha no processamento do upload' });
+  }
+});
+
+// Prefixo para todas as rotas da API
+app.use('/api', router);
 
 // Rota de teste
 app.get('/', (req, res) => {
-    res.send('API da Galeria de Fotos Online. Acesse /api para as rotas.');
+  res.send('API da Galeria de Fotos Online - Utilize /api para as rotas');
 });
 
-// Tratamento de erros global
+// Middleware para erros 404
+app.use((req, res, next) => {
+  res.status(404).json({ 
+    error: 'Rota não encontrada',
+    availableRoutes: ['/api/photos', '/api/upload']
+  });
+});
+
+// Middleware de tratamento de erros
 app.use((err, req, res, next) => {
-    console.error('--- ERRO INTERNO DO SERVIDOR ---');
-    console.error(err.stack); // Mostra o stack trace completo do erro
-    res.status(500).json({ success: false, error: 'Erro interno no servidor' });
+  console.error('Erro:', err.stack);
+  res.status(500).json({ error: 'Erro interno do servidor' });
 });
 
-// Iniciar servidor
+// Inicialização do servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  console.log(`🛡️  CORS permitido para: ${allowedOrigins.join(', ')}`);
 });
