@@ -1441,10 +1441,7 @@
         });
 
         // API Configuration
-        // IMPORTANTE: Mude esta URL para a URL do seu backend na Render após o deploy!
-        // Altere para:
         const API_BASE_URL = 'https://joao-fotografo-profissional.onrender.com/api';
-        // Note o /api no final
 
         // DOM Elements
         const elements = {
@@ -1620,11 +1617,11 @@
 
             if (!Array.isArray(batches) || !batches.length) {
                 elements.galleryContainer.innerHTML = `
-            <div class="empty-gallery">
-                <p class="empty-gallery__text">${errorMessage || 'Nenhuma obra encontrada.'}</p>
-                <small class="empty-gallery__subtext">${errorMessage ? '' : 'Envie suas criações!'}</small>
-            </div>
-        `;
+                <div class="empty-gallery">
+                    <p class="empty-gallery__text">${errorMessage || 'Nenhuma obra encontrada.'}</p>
+                    <small class="empty-gallery__subtext">${errorMessage ? '' : 'Envie suas criações!'}</small>
+                </div>
+            `;
                 return;
             }
 
@@ -1653,81 +1650,81 @@
 
         function createBatchHTML(batch, photos, date) {
             return `
-        <div class="batch-card__header">
-            <h2 class="batch-card__title">Coleção (${photos.length} fotos)</h2>
-            <span class="batch-card__date">Criado em: ${date}</span>
-        </div>
-
-        <div class="batch-info-section">
-            <h3 class="batch-info-section__title">Sobre Esta Coleção</h3>
-            <textarea class="batch-info-section__textarea" id="batch-description-input-${batch._id}" 
-                maxlength="1000" oninput="updateBatchDescriptionCounter('${batch._id}')"
-            >${batch.description || ''}</textarea>
-            <div class="description-counter" id="batch-description-counter-${batch._id}">
-                ${(batch.description || '').length}/1000
+            <div class="batch-card__header">
+                <h2 class="batch-card__title">Coleção (${photos.length} fotos)</h2>
+                <span class="batch-card__date">Criado em: ${date}</span>
             </div>
-            <button class="btn btn--secondary" onclick="saveBatchDescription('${batch._id}')">
-                Salvar Descrição da Coleção
-            </button>
-        </div>
 
-        <div class="batch-photos-grid">
-            ${photos.map(photo => createPhotoHTML(photo)).join('')}
-        </div>
+            <div class="batch-info-section">
+                <h3 class="batch-info-section__title">Sobre Esta Coleção</h3>
+                <textarea class="batch-info-section__textarea" id="batch-description-input-${batch._id}"
+                    maxlength="1000" oninput="updateBatchDescriptionCounter('${batch._id}')"
+                >${batch.description || ''}</textarea>
+                <div class="description-counter" id="batch-description-counter-${batch._id}">
+                    ${(batch.description || '').length}/1000
+                </div>
+                <button class="btn btn--secondary" onclick="saveBatchDescription('${batch._id}')">
+                    Salvar Descrição da Coleção
+                </button>
+            </div>
 
-        <div class="action-buttons">
-            <button class="btn btn--danger" onclick="deleteBatch('${batch._id}')">
-                Deletar Coleção
-            </button>
-        </div>
-    `;
+            <div class="batch-photos-grid">
+                ${photos.map(photo => createPhotoHTML(photo)).join('')}
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn--danger" onclick="deleteBatch('${batch._id}')">
+                    Deletar Coleção
+                </button>
+            </div>
+        `;
         }
 
         function createPhotoHTML(photo) {
             return `
-        <div class="photo-card" id="photo-card-${photo._id}">
-            <img src="${photo.url}" alt="Obra de Arte" class="photo-card__img">
-            <div class="photo-card__details">
-                <div class="photo-description-content">
-                    <textarea class="photo-description-textarea" id="photo-description-input-${photo._id}"
-                        placeholder="Descrição (máx. 500 caracteres)" maxlength="500"
-                        oninput="updatePhotoDescriptionCounter('${photo._id}')"
-                    >${photo.description || ''}</textarea>
-                    <div class="description-counter" id="photo-description-counter-${photo._id}">
-                        ${(photo.description || '').length}/500
+            <div class="photo-card" id="photo-card-${photo._id}">
+                <img src="${photo.url}" alt="Obra de Arte" class="photo-card__img">
+                <div class="photo-card__details">
+                    <div class="photo-description-content">
+                        <textarea class="photo-description-textarea" id="photo-description-input-${photo._id}"
+                            placeholder="Descrição (máx. 500 caracteres)" maxlength="500"
+                            oninput="updatePhotoDescriptionCounter('${photo._id}')"
+                        >${photo.description || ''}</textarea>
+                        <div class="description-counter" id="photo-description-counter-${photo._id}">
+                            ${(photo.description || '').length}/500
+                        </div>
+                        <button class="btn btn--success" onclick="savePhotoDescription('${photo._id}')">
+                            Salvar Descrição da Imagem
+                        </button>
                     </div>
-                    <button class="btn btn--success" onclick="savePhotoDescription('${photo._id}')">
-                        Salvar Descrição da Imagem
-                    </button>
-                </div>
-                <div class="chat-box">
-                    <h4 class="chat-box__title">Comentários</h4>
-                    <div class="chat-messages" id="chat-messages-${photo._id}">
-                        ${(photo.comments || []).map(comment => `
-                            <div class="message">
-                                <span class="message__author">${comment.author}:</span>
-                                ${comment.text}
-                            </div>
-                        `).join('')}
+                    <div class="chat-box">
+                        <h4 class="chat-box__title">Comentários</h4>
+                        <div class="chat-messages" id="chat-messages-${photo._id}">
+                            ${(photo.comments || []).map(comment => `
+                                <div class="message">
+                                    <span class="message__author">${comment.author}:</span>
+                                    ${comment.text}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="chat-input">
+                            <textarea class="chat-input__textarea" id="comment-input-${photo._id}"
+                                placeholder="Comentário (máx. 150 caracteres)" maxlength="150"
+                                oninput="updateCommentCounter('${photo._id}')"></textarea>
+                        </div>
+                        <div class="chat-controls">
+                            <span class="chat-controls__counter" id="comment-counter-${photo._id}">0/150</span>
+                            <button class="btn" onclick="addComment('${photo._id}')">Comentar</button>
+                        </div>
                     </div>
-                    <div class="chat-input">
-                        <textarea class="chat-input__textarea" id="comment-input-${photo._id}"
-                            placeholder="Comentário (máx. 150 caracteres)" maxlength="150"
-                            oninput="updateCommentCounter('${photo._id}')"></textarea>
+                    <div class="action-buttons">
+                        <button class="btn btn--danger" onclick="deletePhoto('${photo._id}')">
+                            Deletar Imagem
+                        </button>
                     </div>
-                    <div class="chat-controls">
-                        <span class="chat-controls__counter" id="comment-counter-${photo._id}">0/150</span>
-                        <button class="btn" onclick="addComment('${photo._id}')">Comentar</button>
-                    </div>
-                </div>
-                <div class="action-buttons">
-                    <button class="btn btn--danger" onclick="deletePhoto('${photo._id}')">
-                        Deletar Imagem
-                    </button>
                 </div>
             </div>
-        </div>
-    `;
+        `;
         }
 
         function initBatchCounters(batch) {
@@ -1911,6 +1908,18 @@
         document.addEventListener('DOMContentLoaded', () => {
             fetchPhotos();
             updateInitialBatchDescriptionCounter();
+
+            // Adicione listeners para os botões de salvar (evento delegado)
+            document.body.addEventListener('click', (e) => {
+                if (e.target.matches('[onclick^="saveBatchDescription"]')) {
+                    const batchId = e.target.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    saveBatchDescription(batchId);
+                }
+                if (e.target.matches('[onclick^="savePhotoDescription"]')) {
+                    const photoId = e.target.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    savePhotoDescription(photoId);
+                }
+            });
         });
     </script>
     <!-- Font Awesome (usando CDN no CSS) -->
