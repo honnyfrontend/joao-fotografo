@@ -1393,274 +1393,272 @@
     </footer>
 
     <script>
-       
+
         // API Configuration
         const API_BASE_URL = 'https://joao-fotografo-profissional.onrender.com/api';
-       
-       // Configuração da API
-// ATENÇÃO: Altere esta URL para o endpoint do seu backend
-const API_BASE_URL = 'http://localhost:3000/api'; // ou 'https://seu-backend.onrender.com/api'
 
-// Elementos DOM
-const elements = {
-    fileInput: document.getElementById('file-input'),
-    selectBtn: document.getElementById('select-btn'),
-    uploadBtn: document.getElementById('upload-btn'),
-    dropArea: document.getElementById('drop-area'),
-    progressContainer: document.getElementById('progress-container'),
-    progressBar: document.getElementById('progress-bar'),
-    statusEl: document.getElementById('status'),
-    galleryContainer: document.getElementById('gallery-container'),
-    fileListPreview: document.getElementById('file-list-preview'),
-    batchDescriptionInput: document.getElementById('batch-description-input')
-};
 
-// Variáveis globais
-let filesToUpload = [];
-const currentUser = 'Visitante';
 
-// ======================
-// FUNÇÕES DE CONTROLE
-// ======================
+        // Elementos DOM
+        const elements = {
+            fileInput: document.getElementById('file-input'),
+            selectBtn: document.getElementById('select-btn'),
+            uploadBtn: document.getElementById('upload-btn'),
+            dropArea: document.getElementById('drop-area'),
+            progressContainer: document.getElementById('progress-container'),
+            progressBar: document.getElementById('progress-bar'),
+            statusEl: document.getElementById('status'),
+            galleryContainer: document.getElementById('gallery-container'),
+            fileListPreview: document.getElementById('file-list-preview'),
+            batchDescriptionInput: document.getElementById('batch-description-input')
+        };
 
-// Loader
-window.addEventListener('load', function() {
-    const loader = document.querySelector('.loader');
-    setTimeout(() => loader.classList.add('hidden'), 1500);
-});
+        // Variáveis globais
+        let filesToUpload = [];
+        const currentUser = 'Visitante';
 
-// Menu Mobile
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const navLinks = document.querySelector('.nav-links');
+        // ======================
+        // FUNÇÕES DE CONTROLE
+        // ======================
 
-mobileMenuBtn.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    mobileMenuBtn.innerHTML = navLinks.classList.contains('active')
-        ? '<i class="fas fa-times"></i>'
-        : '<i class="fas fa-bars"></i>';
-});
-
-// Header scroll effect
-const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 100);
-});
-
-// Scroll suave para links âncora
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetElement = document.querySelector(this.getAttribute('href'));
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// ======================
-// UPLOAD DE ARQUIVOS
-// ======================
-
-// Event Listeners para upload
-elements.selectBtn.addEventListener('click', () => elements.fileInput.click());
-elements.fileInput.addEventListener('change', handleFileSelect);
-elements.uploadBtn.addEventListener('click', handleUpload);
-
-// Drag and Drop
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    elements.dropArea.addEventListener(eventName, preventDefaults, false);
-});
-
-['dragenter', 'dragover'].forEach(eventName => {
-    elements.dropArea.addEventListener(eventName, highlight, false);
-});
-
-['dragleave', 'drop'].forEach(eventName => {
-    elements.dropArea.addEventListener(eventName, unhighlight, false);
-});
-
-elements.dropArea.addEventListener('drop', handleDrop);
-
-// Funções de upload
-function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
-}
-
-function highlight() {
-    elements.dropArea.classList.add('dragover');
-}
-
-function unhighlight() {
-    elements.dropArea.classList.remove('dragover');
-}
-
-function handleDrop(e) {
-    const files = e.dataTransfer.files;
-    handleFiles(files);
-}
-
-function handleFileSelect(e) {
-    handleFiles(e.target.files);
-}
-
-function handleFiles(files) {
-    const imageFiles = Array.from(files).filter(file => 
-        file.type.match(/image\/(jpeg|png|jpg|webp)/)
-    );
-
-    if (!imageFiles.length) {
-        showStatus('Apenas imagens (JPEG, PNG, JPG, WEBP) são permitidas.', 'error');
-        return;
-    }
-
-    if (imageFiles.length + filesToUpload.length > 10) {
-        showStatus(`Máximo de 10 arquivos. ${filesToUpload.length} já selecionados.`, 'error');
-        return;
-    }
-
-    filesToUpload = [...filesToUpload, ...imageFiles];
-    updateUI();
-}
-
-function updateUI() {
-    elements.uploadBtn.disabled = filesToUpload.length === 0;
-
-    if (filesToUpload.length) {
-        showStatus(`${filesToUpload.length} arquivo(s) selecionado(s).`, '');
-        elements.fileListPreview.innerHTML = filesToUpload.map(file =>
-            `<li>${file.name} <span class="file-size">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span></li>`
-        ).join('');
-        elements.fileListPreview.style.display = 'block';
-    } else {
-        showStatus('', '');
-        elements.fileListPreview.innerHTML = '';
-        elements.fileListPreview.style.display = 'none';
-    }
-}
-
-async function handleUpload() {
-    if (!filesToUpload.length) return;
-
-    try {
-        showProgress('Enviando arquivos...');
-
-        const formData = new FormData();
-        filesToUpload.forEach(file => formData.append('images', file));
-
-        if (elements.batchDescriptionInput.value.trim()) {
-            formData.append('batchDescription', elements.batchDescriptionInput.value.trim().substring(0, 1000));
-        }
-
-        const response = await fetch(`${API_BASE_URL}/upload`, {
-            method: 'POST',
-            body: formData
+        // Loader
+        window.addEventListener('load', function () {
+            const loader = document.querySelector('.loader');
+            setTimeout(() => loader.classList.add('hidden'), 1500);
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Erro no upload');
+        // Menu Mobile
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active')
+                ? '<i class="fas fa-times"></i>'
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        // Scroll suave para links âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ======================
+        // UPLOAD DE ARQUIVOS
+        // ======================
+
+        // Event Listeners para upload
+        elements.selectBtn.addEventListener('click', () => elements.fileInput.click());
+        elements.fileInput.addEventListener('change', handleFileSelect);
+        elements.uploadBtn.addEventListener('click', handleUpload);
+
+        // Drag and Drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            elements.dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            elements.dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            elements.dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        elements.dropArea.addEventListener('drop', handleDrop);
+
+        // Funções de upload
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
         }
 
-        const data = await response.json();
-        showStatus(data.message, 'success');
-
-        if (data.warnings) {
-            console.warn('Arquivos com falha:', data.failed);
+        function highlight() {
+            elements.dropArea.classList.add('dragover');
         }
 
-        resetUploadForm();
-        await fetchPhotos();
-    } catch (error) {
-        console.error('Upload error:', error);
-        showStatus(error.message || 'Erro ao enviar arquivos. Tente novamente.', 'error');
-    } finally {
-        setTimeout(() => {
-            elements.progressContainer.style.display = 'none';
+        function unhighlight() {
+            elements.dropArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            handleFiles(e.target.files);
+        }
+
+        function handleFiles(files) {
+            const imageFiles = Array.from(files).filter(file =>
+                file.type.match(/image\/(jpeg|png|jpg|webp)/)
+            );
+
+            if (!imageFiles.length) {
+                showStatus('Apenas imagens (JPEG, PNG, JPG, WEBP) são permitidas.', 'error');
+                return;
+            }
+
+            if (imageFiles.length + filesToUpload.length > 10) {
+                showStatus(`Máximo de 10 arquivos. ${filesToUpload.length} já selecionados.`, 'error');
+                return;
+            }
+
+            filesToUpload = [...filesToUpload, ...imageFiles];
+            updateUI();
+        }
+
+        function updateUI() {
+            elements.uploadBtn.disabled = filesToUpload.length === 0;
+
+            if (filesToUpload.length) {
+                showStatus(`${filesToUpload.length} arquivo(s) selecionado(s).`, '');
+                elements.fileListPreview.innerHTML = filesToUpload.map(file =>
+                    `<li>${file.name} <span class="file-size">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span></li>`
+                ).join('');
+                elements.fileListPreview.style.display = 'block';
+            } else {
+                showStatus('', '');
+                elements.fileListPreview.innerHTML = '';
+                elements.fileListPreview.style.display = 'none';
+            }
+        }
+
+        async function handleUpload() {
+            if (!filesToUpload.length) return;
+
+            try {
+                showProgress('Enviando arquivos...');
+
+                const formData = new FormData();
+                filesToUpload.forEach(file => formData.append('images', file));
+
+                if (elements.batchDescriptionInput.value.trim()) {
+                    formData.append('batchDescription', elements.batchDescriptionInput.value.trim().substring(0, 1000));
+                }
+
+                const response = await fetch(`${API_BASE_URL}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Erro no upload');
+                }
+
+                const data = await response.json();
+                showStatus(data.message, 'success');
+
+                if (data.warnings) {
+                    console.warn('Arquivos com falha:', data.failed);
+                }
+
+                resetUploadForm();
+                await fetchPhotos();
+            } catch (error) {
+                console.error('Upload error:', error);
+                showStatus(error.message || 'Erro ao enviar arquivos. Tente novamente.', 'error');
+            } finally {
+                setTimeout(() => {
+                    elements.progressContainer.style.display = 'none';
+                    elements.progressBar.style.width = '0%';
+                }, 2000);
+            }
+        }
+
+        function showProgress(message) {
+            elements.progressContainer.style.display = 'block';
             elements.progressBar.style.width = '0%';
-        }, 2000);
-    }
-}
-
-function showProgress(message) {
-    elements.progressContainer.style.display = 'block';
-    elements.progressBar.style.width = '0%';
-    setTimeout(() => elements.progressBar.style.width = '70%', 100);
-    showStatus(message, '');
-}
-
-function resetUploadForm() {
-    filesToUpload = [];
-    elements.fileInput.value = '';
-    elements.batchDescriptionInput.value = '';
-    updateInitialBatchDescriptionCounter();
-    updateUI();
-}
-
-// ======================
-// GALERIA E SALVAMENTO
-// ======================
-
-// Função principal para carregar fotos
-async function fetchPhotos() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/photos`);
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-            throw new Error(data.error || 'Erro ao carregar lotes');
+            setTimeout(() => elements.progressBar.style.width = '70%', 100);
+            showStatus(message, '');
         }
 
-        renderGallery(data.batches);
-    } catch (error) {
-        console.error('Fetch photos error:', error);
-        renderGallery([], error.message);
-    }
-}
+        function resetUploadForm() {
+            filesToUpload = [];
+            elements.fileInput.value = '';
+            elements.batchDescriptionInput.value = '';
+            updateInitialBatchDescriptionCounter();
+            updateUI();
+        }
 
-// Renderiza a galeria
-function renderGallery(batches, errorMessage = null) {
-    elements.galleryContainer.innerHTML = '';
+        // ======================
+        // GALERIA E SALVAMENTO
+        // ======================
 
-    if (!Array.isArray(batches) || !batches.length) {
-        elements.galleryContainer.innerHTML = `
+        // Função principal para carregar fotos
+        async function fetchPhotos() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/photos`);
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.error || 'Erro ao carregar lotes');
+                }
+
+                renderGallery(data.batches);
+            } catch (error) {
+                console.error('Fetch photos error:', error);
+                renderGallery([], error.message);
+            }
+        }
+
+        // Renderiza a galeria
+        function renderGallery(batches, errorMessage = null) {
+            elements.galleryContainer.innerHTML = '';
+
+            if (!Array.isArray(batches) || !batches.length) {
+                elements.galleryContainer.innerHTML = `
             <div class="empty-gallery">
                 <p class="empty-gallery__text">${errorMessage || 'Nenhuma obra encontrada.'}</p>
                 <small class="empty-gallery__subtext">${errorMessage ? '' : 'Envie suas criações!'}</small>
             </div>
         `;
-        return;
-    }
+                return;
+            }
 
-    batches.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            batches.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-    batches.forEach(batch => {
-        const validPhotos = batch.photos?.filter(photo => photo?.url) || [];
-        if (!validPhotos.length) return;
+            batches.forEach(batch => {
+                const validPhotos = batch.photos?.filter(photo => photo?.url) || [];
+                if (!validPhotos.length) return;
 
-        const batchDate = new Date(batch.createdAt).toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+                const batchDate = new Date(batch.createdAt).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
 
-        const batchItem = document.createElement('div');
-        batchItem.className = 'batch-card';
-        batchItem.innerHTML = createBatchHTML(batch, validPhotos, batchDate);
-        elements.galleryContainer.appendChild(batchItem);
+                const batchItem = document.createElement('div');
+                batchItem.className = 'batch-card';
+                batchItem.innerHTML = createBatchHTML(batch, validPhotos, batchDate);
+                elements.galleryContainer.appendChild(batchItem);
 
-        initBatchCounters(batch);
-    });
-}
+                initBatchCounters(batch);
+            });
+        }
 
-// Gera HTML para um lote
-function createBatchHTML(batch, photos, date) {
-    return `
+        // Gera HTML para um lote
+        function createBatchHTML(batch, photos, date) {
+            return `
         <div class="batch-card__header">
             <h2 class="batch-card__title">Coleção (${photos.length} fotos)</h2>
             <span class="batch-card__date">Criado em: ${date}</span>
@@ -1689,11 +1687,11 @@ function createBatchHTML(batch, photos, date) {
             </button>
         </div>
     `;
-}
+        }
 
-// Gera HTML para uma foto individual
-function createPhotoHTML(photo) {
-    return `
+        // Gera HTML para uma foto individual
+        function createPhotoHTML(photo) {
+            return `
         <div class="photo-card" id="photo-card-${photo._id}">
             <img src="${photo.url}" alt="Obra de Arte" class="photo-card__img">
             <div class="photo-card__details">
@@ -1737,140 +1735,140 @@ function createPhotoHTML(photo) {
             </div>
         </div>
     `;
-}
-
-// ======================
-// FUNÇÕES DE SALVAMENTO
-// ======================
-
-// Salva descrição do lote (coleção)
-async function saveBatchDescription(batchId) {
-    const description = document.getElementById(`batch-description-input-${batchId}`).value;
-    try {
-        const response = await fetch(`${API_BASE_URL}/batches/${batchId}/description`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ description })
-        });
-
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.error || 'Erro ao salvar descrição do lote');
         }
 
-        showStatus('Descrição da coleção salva com sucesso!', 'success');
-    } catch (error) {
-        console.error('Erro ao salvar descrição do lote:', error);
-        showStatus(error.message, 'error');
-    }
-}
+        // ======================
+        // FUNÇÕES DE SALVAMENTO
+        // ======================
 
-// Salva descrição da foto
-async function savePhotoDescription(photoId) {
-    const description = document.getElementById(`photo-description-input-${photoId}`).value;
-    try {
-        const response = await fetch(`${API_BASE_URL}/photos/${photoId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ description })
-        });
+        // Salva descrição do lote (coleção)
+        async function saveBatchDescription(batchId) {
+            const description = document.getElementById(`batch-description-input-${batchId}`).value;
+            try {
+                const response = await fetch(`${API_BASE_URL}/batches/${batchId}/description`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ description })
+                });
 
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(data.error || 'Erro ao salvar descrição da foto');
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro ao salvar descrição do lote');
+                }
+
+                showStatus('Descrição da coleção salva com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao salvar descrição do lote:', error);
+                showStatus(error.message, 'error');
+            }
         }
 
-        showStatus('Descrição da imagem salva com sucesso!', 'success');
-    } catch (error) {
-        console.error('Erro ao salvar descrição da foto:', error);
-        showStatus(error.message, 'error');
-    }
-}
+        // Salva descrição da foto
+        async function savePhotoDescription(photoId) {
+            const description = document.getElementById(`photo-description-input-${photoId}`).value;
+            try {
+                const response = await fetch(`${API_BASE_URL}/photos/${photoId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ description })
+                });
 
-// ======================
-// FUNÇÕES AUXILIARES
-// ======================
+                const data = await response.json();
 
-// Contadores de caracteres
-function updateInitialBatchDescriptionCounter() {
-    updateCounter(
-        'batch-description-input',
-        'initial-batch-description-counter',
-        1000
-    );
-}
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro ao salvar descrição da foto');
+                }
 
-function updateBatchDescriptionCounter(batchId) {
-    updateCounter(
-        `batch-description-input-${batchId}`,
-        `batch-description-counter-${batchId}`,
-        1000
-    );
-}
+                showStatus('Descrição da imagem salva com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao salvar descrição da foto:', error);
+                showStatus(error.message, 'error');
+            }
+        }
 
-function updatePhotoDescriptionCounter(photoId) {
-    updateCounter(
-        `photo-description-input-${photoId}`,
-        `photo-description-counter-${photoId}`,
-        500
-    );
-}
+        // ======================
+        // FUNÇÕES AUXILIARES
+        // ======================
 
-function updateCommentCounter(photoId) {
-    updateCounter(
-        `comment-input-${photoId}`,
-        `comment-counter-${photoId}`,
-        150
-    );
-}
+        // Contadores de caracteres
+        function updateInitialBatchDescriptionCounter() {
+            updateCounter(
+                'batch-description-input',
+                'initial-batch-description-counter',
+                1000
+            );
+        }
 
-function updateCounter(inputId, counterId, maxLength) {
-    const input = document.getElementById(inputId);
-    const counter = document.getElementById(counterId);
-    if (input && counter) {
-        counter.textContent = `${input.value.length}/${maxLength}`;
-    }
-}
+        function updateBatchDescriptionCounter(batchId) {
+            updateCounter(
+                `batch-description-input-${batchId}`,
+                `batch-description-counter-${batchId}`,
+                1000
+            );
+        }
 
-// Inicializa contadores para um lote
-function initBatchCounters(batch) {
-    updateBatchDescriptionCounter(batch._id);
-    batch.photos?.forEach(photo => {
-        updatePhotoDescriptionCounter(photo._id);
-        updateCommentCounter(photo._id);
-    });
-}
+        function updatePhotoDescriptionCounter(photoId) {
+            updateCounter(
+                `photo-description-input-${photoId}`,
+                `photo-description-counter-${photoId}`,
+                500
+            );
+        }
 
-// Mostra mensagens de status
-function showStatus(message, type) {
-    elements.statusEl.textContent = message;
-    elements.statusEl.className = `status-message ${type || ''}`.trim();
-}
+        function updateCommentCounter(photoId) {
+            updateCounter(
+                `comment-input-${photoId}`,
+                `comment-counter-${photoId}`,
+                150
+            );
+        }
 
-// ======================
-// INICIALIZAÇÃO
-// ======================
+        function updateCounter(inputId, counterId, maxLength) {
+            const input = document.getElementById(inputId);
+            const counter = document.getElementById(counterId);
+            if (input && counter) {
+                counter.textContent = `${input.value.length}/${maxLength}`;
+            }
+        }
 
-// Carrega os dados quando a página é aberta
-document.addEventListener('DOMContentLoaded', () => {
-    fetchPhotos();
-    updateInitialBatchDescriptionCounter();
-});
+        // Inicializa contadores para um lote
+        function initBatchCounters(batch) {
+            updateBatchDescriptionCounter(batch._id);
+            batch.photos?.forEach(photo => {
+                updatePhotoDescriptionCounter(photo._id);
+                updateCommentCounter(photo._id);
+            });
+        }
 
-// Fontes externas
-document.addEventListener('DOMContentLoaded', () => {
-    // Google Fonts
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-});
+        // Mostra mensagens de status
+        function showStatus(message, type) {
+            elements.statusEl.textContent = message;
+            elements.statusEl.className = `status-message ${type || ''}`.trim();
+        }
+
+        // ======================
+        // INICIALIZAÇÃO
+        // ======================
+
+        // Carrega os dados quando a página é aberta
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchPhotos();
+            updateInitialBatchDescriptionCounter();
+        });
+
+        // Fontes externas
+        document.addEventListener('DOMContentLoaded', () => {
+            // Google Fonts
+            const link = document.createElement('link');
+            link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap';
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+        });
     </script>
     <!-- Font Awesome (usando CDN no CSS) -->
     <!-- Google Fonts -->
