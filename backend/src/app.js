@@ -12,11 +12,10 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Lista de origens permitidas (ATUALIZE COM SUA URL REAL)
 const allowedOrigins = [
-    'https://joao-fotografo-profissional.onrender.com', // ← SUA URL NO RENDER
+    'https://joao-fotografo.onrender.com', // ← URL DO SEU FRONTEND
+    'https://joao-fotografo-profissional.onrender.com', // URL do backend (opcional)
     'http://localhost:3000',
-    'http://localhost:5173', // Vite/React
-    'http://127.0.0.1:5500', // Live Server
-    'http://localhost:5500'  // Alternativa do Live Server
+    'http://localhost:5173'
 ];
 
 // Configuração do CORS (versão simplificada e segura)
