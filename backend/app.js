@@ -32,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rotas
 const uploadRoutes = require('./routes/uploadRoutes');
+
 app.use('/api', uploadRoutes);
 
 // Rota de teste
