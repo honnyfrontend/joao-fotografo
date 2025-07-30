@@ -14,6 +14,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch(err => console.error('❌ Erro MongoDB:', err));
 
 const allowedOrigins = [
+    'https://joao-fotografo-1.onrender.com',
     'http://localhost:3000', 
     'http://localhost:5173', 
     'http://localhost:8080', 
