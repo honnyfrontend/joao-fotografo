@@ -1393,41 +1393,13 @@
     </footer>
 
     <script>
-
-        // API Configuration
-        const API_BASE_URL = 'https://joao-fotografo-profissional.onrender.com/api';
-
-
-
-        // Elementos DOM
-        const elements = {
-            fileInput: document.getElementById('file-input'),
-            selectBtn: document.getElementById('select-btn'),
-            uploadBtn: document.getElementById('upload-btn'),
-            dropArea: document.getElementById('drop-area'),
-            progressContainer: document.getElementById('progress-container'),
-            progressBar: document.getElementById('progress-bar'),
-            statusEl: document.getElementById('status'),
-            galleryContainer: document.getElementById('gallery-container'),
-            fileListPreview: document.getElementById('file-list-preview'),
-            batchDescriptionInput: document.getElementById('batch-description-input')
-        };
-
-        // Variáveis globais
-        let filesToUpload = [];
-        const currentUser = 'Visitante';
-
-        // ======================
-        // FUNÇÕES DE CONTROLE
-        // ======================
-
         // Loader
         window.addEventListener('load', function () {
             const loader = document.querySelector('.loader');
             setTimeout(() => loader.classList.add('hidden'), 1500);
         });
 
-        // Menu Mobile
+        // Mobile Menu
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
 
@@ -1438,13 +1410,23 @@
                 : '<i class="fas fa-bars"></i>';
         });
 
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
         // Header scroll effect
         const header = document.getElementById('header');
         window.addEventListener('scroll', () => {
             header.classList.toggle('scrolled', window.scrollY > 100);
         });
 
-        // Scroll suave para links âncora
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1458,11 +1440,31 @@
             });
         });
 
-        // ======================
-        // UPLOAD DE ARQUIVOS
-        // ======================
+        // API Configuration
+        // IMPORTANTE: Mude esta URL para a URL do seu backend na Render após o deploy!
+        const API_BASE_URL = 'https://joao-fotografo-profissional.onrender.com';
+        // Altere para:
+        const API_BASE_URL = 'https://joao-fotografo-profissional.onrender.com/api';
+        // Note o /api no final
 
-        // Event Listeners para upload
+        // DOM Elements
+        const elements = {
+            fileInput: document.getElementById('file-input'),
+            selectBtn: document.getElementById('select-btn'),
+            uploadBtn: document.getElementById('upload-btn'),
+            dropArea: document.getElementById('drop-area'),
+            progressContainer: document.getElementById('progress-container'),
+            progressBar: document.getElementById('progress-bar'),
+            statusEl: document.getElementById('status'),
+            galleryContainer: document.getElementById('gallery-container'),
+            fileListPreview: document.getElementById('file-list-preview'),
+            batchDescriptionInput: document.getElementById('batch-description-input')
+        };
+
+        let filesToUpload = [];
+        const currentUser = 'Visitante';
+
+        // Event Listeners
         elements.selectBtn.addEventListener('click', () => elements.fileInput.click());
         elements.fileInput.addEventListener('change', handleFileSelect);
         elements.uploadBtn.addEventListener('click', handleUpload);
@@ -1482,7 +1484,7 @@
 
         elements.dropArea.addEventListener('drop', handleDrop);
 
-        // Funções de upload
+        // Functions
         function preventDefaults(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1598,11 +1600,6 @@
             updateUI();
         }
 
-        // ======================
-        // GALERIA E SALVAMENTO
-        // ======================
-
-        // Função principal para carregar fotos
         async function fetchPhotos() {
             try {
                 const response = await fetch(`${API_BASE_URL}/photos`);
@@ -1619,7 +1616,6 @@
             }
         }
 
-        // Renderiza a galeria
         function renderGallery(batches, errorMessage = null) {
             elements.galleryContainer.innerHTML = '';
 
@@ -1656,7 +1652,6 @@
             });
         }
 
-        // Gera HTML para um lote
         function createBatchHTML(batch, photos, date) {
             return `
         <div class="batch-card__header">
@@ -1689,7 +1684,6 @@
     `;
         }
 
-        // Gera HTML para uma foto individual
         function createPhotoHTML(photo) {
             return `
         <div class="photo-card" id="photo-card-${photo._id}">
@@ -1737,65 +1731,20 @@
     `;
         }
 
-        // ======================
-        // FUNÇÕES DE SALVAMENTO
-        // ======================
-
-        // Salva descrição do lote (coleção)
-        async function saveBatchDescription(batchId) {
-            const description = document.getElementById(`batch-description-input-${batchId}`).value;
-            try {
-                const response = await fetch(`${API_BASE_URL}/batches/${batchId}/description`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ description })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error || 'Erro ao salvar descrição do lote');
-                }
-
-                showStatus('Descrição da coleção salva com sucesso!', 'success');
-            } catch (error) {
-                console.error('Erro ao salvar descrição do lote:', error);
-                showStatus(error.message, 'error');
-            }
+        function initBatchCounters(batch) {
+            updateBatchDescriptionCounter(batch._id);
+            batch.photos?.forEach(photo => {
+                updatePhotoDescriptionCounter(photo._id);
+                updateCommentCounter(photo._id);
+            });
         }
 
-        // Salva descrição da foto
-        async function savePhotoDescription(photoId) {
-            const description = document.getElementById(`photo-description-input-${photoId}`).value;
-            try {
-                const response = await fetch(`${API_BASE_URL}/photos/${photoId}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ description })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error || 'Erro ao salvar descrição da foto');
-                }
-
-                showStatus('Descrição da imagem salva com sucesso!', 'success');
-            } catch (error) {
-                console.error('Erro ao salvar descrição da foto:', error);
-                showStatus(error.message, 'error');
-            }
+        function showStatus(message, type) {
+            elements.statusEl.textContent = message;
+            elements.statusEl.className = `status-message ${type || ''}`.trim();
         }
 
-        // ======================
-        // FUNÇÕES AUXILIARES
-        // ======================
-
-        // Contadores de caracteres
+        // Counter functions
         function updateInitialBatchDescriptionCounter() {
             updateCounter(
                 'batch-description-input',
@@ -1836,38 +1785,133 @@
             }
         }
 
-        // Inicializa contadores para um lote
-        function initBatchCounters(batch) {
-            updateBatchDescriptionCounter(batch._id);
-            batch.photos?.forEach(photo => {
-                updatePhotoDescriptionCounter(photo._id);
-                updateCommentCounter(photo._id);
-            });
+        // API interaction functions
+        async function saveBatchDescription(batchId) {
+            await apiRequest(
+                `${API_BASE_URL}/batches/${batchId}/description`,
+                'PATCH',
+                { description: document.getElementById(`batch-description-input-${batchId}`).value },
+                'Descrição do lote atualizada com sucesso!',
+                'Erro ao salvar descrição do lote',
+                true
+            );
         }
 
-        // Mostra mensagens de status
-        function showStatus(message, type) {
-            elements.statusEl.textContent = message;
-            elements.statusEl.className = `status-message ${type || ''}`.trim();
+        async function savePhotoDescription(photoId) {
+            await apiRequest(
+                `${API_BASE_URL}/photos/${photoId}`,
+                'PATCH',
+                { description: document.getElementById(`photo-description-input-${photoId}`).value },
+                'Descrição da imagem atualizada!',
+                'Erro ao salvar descrição',
+                true
+            );
         }
 
-        // ======================
-        // INICIALIZAÇÃO
-        // ======================
+        async function addComment(photoId) {
+            const text = document.getElementById(`comment-input-${photoId}`).value.trim();
+            if (!text) {
+                showStatus('Comentário não pode estar vazio.', 'error');
+                return;
+            }
 
-        // Carrega os dados quando a página é aberta
+            await apiRequest(
+                `${API_BASE_URL}/photos/${photoId}/comments`,
+                'POST',
+                { author: currentUser, text },
+                'Comentário adicionado!',
+                'Erro ao adicionar comentário'
+            );
+
+            document.getElementById(`comment-input-${photoId}`).value = '';
+            updateCommentCounter(photoId);
+            fetchPhotos();
+        }
+
+        async function deletePhoto(photoId) {
+            if (!confirm('Deletar esta imagem? Esta ação é irreversível.')) return;
+
+            await apiRequest(
+                `${API_BASE_URL}/photos/${photoId}`,
+                'DELETE',
+                null,
+                'Imagem deletada com sucesso!',
+                'Erro ao deletar imagem',
+                true
+            );
+        }
+
+        async function deleteBatch(batchId) {
+            if (!confirm('Deletar esta coleção completa e TODAS as suas fotos? Esta ação é irreversível.')) return;
+
+            await apiRequest(
+                `${API_BASE_URL}/batches/${batchId}`,
+                'DELETE',
+                null,
+                'Coleção e fotos deletadas com sucesso!',
+                'Erro ao deletar coleção',
+                true
+            );
+        }
+
+        async function apiRequest(url, method, body, successMsg, errorMsg, refreshOnSuccess = false) {
+            try {
+                const options = {
+                    method,
+                    headers: {}
+                };
+
+                if (body) {
+                    options.headers['Content-Type'] = 'application/json';
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(url, options);
+
+                if (!response.ok) {
+                    let errorData = {};
+                    try {
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            errorData = await response.json();
+                        } else {
+                            const errorText = await response.text();
+                            throw new Error(`Erro na requisição (Status: ${response.status}): ${response.statusText} - ${errorText}`);
+                        }
+                    } catch (e) {
+                        console.error('Erro ao parsear resposta de erro ou resposta não é JSON:', e);
+                        throw new Error(`Erro na requisição (Status: ${response.status}): ${response.statusText}`);
+                    }
+                    throw new Error(errorData.error || errorMsg || `Erro na requisição (Status: ${response.status})`);
+                }
+
+                showStatus(successMsg, 'success');
+                if (refreshOnSuccess) {
+                    setTimeout(fetchPhotos, 500);
+                }
+            } catch (error) {
+                console.error(`${errorMsg}:`, error);
+                showStatus(error.message, 'error');
+            }
+        }
+
+        // Form handlers
+        document.querySelector('.contact-form')?.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Mensagem enviada com sucesso!');
+            this.reset();
+        });
+
+        document.querySelector('.newsletter-form')?.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Obrigado por assinar nossa newsletter!');
+            this.reset();
+        });
+
+        // Initial load
         document.addEventListener('DOMContentLoaded', () => {
             fetchPhotos();
             updateInitialBatchDescriptionCounter();
-        });
-
-        // Fontes externas
-        document.addEventListener('DOMContentLoaded', () => {
-            // Google Fonts
-            const link = document.createElement('link');
-            link.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap';
-            link.rel = 'stylesheet';
-            document.head.appendChild(link);
         });
     </script>
     <!-- Font Awesome (usando CDN no CSS) -->
@@ -1876,5 +1920,4 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 </body>
-
 </html>
