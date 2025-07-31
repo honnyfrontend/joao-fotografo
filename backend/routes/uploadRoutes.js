@@ -16,6 +16,7 @@ const upload = multer({
     }
 }).array('images', 10);
 
+// Helper para tratamento de erros
 const handleError = (res, error, defaultMessage) => {
     console.error('--- ERRO DE REQUISIÇÃO ---');
     console.error(error);
@@ -39,6 +40,7 @@ const handleError = (res, error, defaultMessage) => {
     return res.status(status).json({ success: false, error: message });
 };
 
+// Upload de múltiplas imagens
 router.post('/upload', async (req, res) => {
     console.log('Recebida requisição POST /api/upload');
     try {
@@ -64,7 +66,7 @@ router.post('/upload', async (req, res) => {
         });
 
         const results = await Promise.allSettled(
-            req.files.map(file =>
+            req.files.map(file => 
                 Photo.create({
                     url: file.path,
                     public_id: file.filename
@@ -97,6 +99,7 @@ router.post('/upload', async (req, res) => {
     }
 });
 
+// Listar todos os lotes com fotos
 router.get('/photos', async (req, res) => {
     console.log('Recebida requisição GET /api/photos');
     try {
@@ -106,7 +109,7 @@ router.get('/photos', async (req, res) => {
                 populate: { path: 'comments' }
             })
             .sort({ createdAt: -1 });
-
+        
         console.log(`Encontrados ${batches.length} lotes.`);
         res.json({ success: true, batches });
     } catch (error) {
@@ -114,6 +117,7 @@ router.get('/photos', async (req, res) => {
     }
 });
 
+// Rotas para fotos individuais
 router.route('/photos/:id')
     .delete(async (req, res) => {
         console.log(`Recebida requisição DELETE /api/photos/${req.params.id}`);
@@ -151,7 +155,7 @@ router.route('/photos/:id')
                 { description: req.body.description },
                 { new: true, runValidators: true }
             );
-
+            
             if (!photo) {
                 console.log(`Foto com ID ${req.params.id} não encontrada para atualização.`);
                 return res.status(404).json({ success: false, error: 'Foto não encontrada' });
@@ -164,6 +168,7 @@ router.route('/photos/:id')
         }
     });
 
+// Rota para adicionar comentário a uma FOTO específica
 router.post('/photos/:id/comments', async (req, res) => {
     console.log(`Recebida requisição POST /api/photos/${req.params.id}/comments`);
     console.log('Corpo do comentário:', req.body);
@@ -190,6 +195,7 @@ router.post('/photos/:id/comments', async (req, res) => {
     }
 });
 
+// Rotas para lotes
 router.route('/batches/:id/description')
     .patch(async (req, res) => {
         console.log(`Recebida requisição PATCH /api/batches/${req.params.id}/description`);
@@ -217,6 +223,7 @@ router.route('/batches/:id/description')
         }
     });
 
+// Rota para deletar um lote inteiro
 router.delete('/batches/:id', async (req, res) => {
     console.log(`Recebida requisição DELETE /api/batches/${req.params.id}`);
     try {
@@ -226,6 +233,7 @@ router.delete('/batches/:id', async (req, res) => {
             return res.status(404).json({ success: false, error: 'Lote não encontrado' });
         }
 
+        // Deleta todas as fotos associadas a este lote no Cloudinary e no MongoDB
         for (const photoId of batch.photos) {
             const photo = await Photo.findById(photoId);
             if (photo) {
@@ -235,6 +243,7 @@ router.delete('/batches/:id', async (req, res) => {
             }
         }
 
+        // Deleta o lote em si
         await Batch.findByIdAndDelete(req.params.id);
         console.log(`Lote ${req.params.id} e suas fotos associadas deletados com sucesso.`);
 
